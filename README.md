@@ -9,7 +9,7 @@
   </a>
 </p>
 <p align="center">
-<a data-flickr-embed="true" data-header="true" data-footer="true" data-context="true" href="https://www.flickr.com/photos/145521657@N07/54874401008/in/album-72177720329848772" title="PXL_20251017_154519765"><img src="https://live.staticflickr.com/65535/54874401008_aa25b6a70a_w.jpg" width="400" height="225" alt="PXL_20251017_154519765"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+<a data-flickr-embed="true" data-header="true" data-footer="true" data-context="true" href="https://www.flickr.com/photos/145521657@N07/54874401008/in/album-72177720329848772" title="PXL_20251017_154519765"><img src="https://live.staticflickr.com/65535/54874401008_aa25b6a70a_w.jpg" width="530" height="300" alt="PXL_20251017_154519765"/>
 </p>
 
 <p align="center">¡La app oficial de  <a href="https://flutterconfesp.web.app/">FlutterConf</a> donde podrás encontrar toda la info del evento! </p>
