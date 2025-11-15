@@ -104,9 +104,9 @@ This document outlines the phased implementation plan for rebranding the "Flutte
 
 ## Phase 5: Finalization
 
--   [ ] Update the `README.md` file with relevant information from the modification.
--   [ ] Create a `GEMINI.md` file in the project directory that describes the app, its purpose, implementation details, and the layout of the files.
--   [ ] Ask the user to inspect the package (and running app, if any) and say if they are satisfied with it, or if any modifications are needed.
+-   [x] Update the `README.md` file with relevant information from the modification.
+-   [x] Create a `GEMINI.md` file in the project directory that describes the app, its purpose, implementation details, and the layout of the files.
+-   [x] Ask the user to inspect the package (and running app, if any) and say if they are satisfied with it, or if any modifications are needed.
 -   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 -   [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
@@ -194,9 +194,9 @@ This document outlines the phased implementation plan for rebranding the "Flutte
 -   [x] Run `dart_format` to make sure that the formatting is correct.
 -   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 -   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
--   [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
--   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
+-   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
+-   [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
+-   [x] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
 
 ## Phase 5: Finalization
 
