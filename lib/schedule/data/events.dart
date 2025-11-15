@@ -125,7 +125,7 @@ This is a dinner hosted at the Google office for speakers and sponsors that have
     ),
   ),
   Activity(
-    name: '🎯 Flutter & Fun Pub Quiz',
+    name: '🎯 FlutterConf Pub Quiz',
     startTime: DateTime(2025, 8, 31, 20),
     duration: const Duration(hours: 3),
     description: '''
@@ -171,7 +171,7 @@ If you come early you will also get some extra swag 😉''',
     location: mainStage,
   ),
   Activity(
-    name: '🪩 Flutter & Friends Party',
+    name: '🪩 FlutterConf Party',
     startTime: DateTime(2025, 9, 1, 19),
     duration: const Duration(hours: 5),
     description: '''
@@ -191,7 +191,7 @@ final day3 = <Event>[
     startTime: DateTime(2025, 9, 2, 16, 30),
     duration: const Duration(minutes: 90),
     description: '''
-For the ones who just feel like you didn't get enough of the "Friends" part of Flutter and Friends. Join the unofficial afterparty at Sthlm under Stjärnorna, a rooftop bar with a great view.
+For the ones who just feel like you didn't get enough of the "Friends" part of FlutterConf. Join the unofficial afterparty at Sthlm under Stjärnorna, a rooftop bar with a great view.
 
 You'll get time to wind down with your newfound friends with a drink in your hand, talking about everything that happened during these three hectic days.
 

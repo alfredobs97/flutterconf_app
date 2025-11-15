@@ -1,6 +1,6 @@
 # Privacy Policy
 
-This privacy policy applies to the Flutter & Friends app (hereby referred to as "Application") for mobile devices that was created by Felix Angelov (hereby referred to as "Service Provider") as an Open Source service. This service is intended for use "AS IS".
+This privacy policy applies to the FlutterConf app (hereby referred to as "Application") for mobile devices that was created by Felix Angelov (hereby referred to as "Service Provider") as an Open Source service. This service is intended for use "AS IS".
 
 ## Information Collection and Use
 

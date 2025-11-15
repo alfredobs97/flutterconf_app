@@ -72,30 +72,18 @@ class SettingsView extends StatelessWidget {
                 color: Colors.indigo,
               ),
               title: const Text('LinkedIn'),
-              subtitle: const Text('@flutter-friends'),
+              subtitle: const Text('@flutterconf'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrlString(
-                'https://www.linkedin.com/company/flutter-friends',
+                'https://www.linkedin.com/company/flutterconf',
               ),
             ),
             ListTile(
               leading: const Icon(FontAwesomeIcons.xTwitter),
               title: const Text('X.com'),
-              subtitle: const Text('@FlutterNFriends'),
+              subtitle: const Text('@flutterconfes'),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => launchUrlString('https://x.com/FlutterNFriends'),
-            ),
-            ListTile(
-              leading: const Icon(
-                FontAwesomeIcons.bluesky,
-                color: Colors.blueAccent,
-              ),
-              title: const Text('Bluesky'),
-              subtitle: const Text('@flutterfriends.dev'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => launchUrlString(
-                'https://bsky.app/profile/flutterfriends.dev',
-              ),
+              onTap: () => launchUrlString('https://x.com/flutterconfes'),
             ),
             const SizedBox(height: 16),
             Text('About', style: headingStyle),
@@ -111,7 +99,7 @@ class SettingsView extends StatelessWidget {
               subtitle: const Text('View the official website'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrlString(
-                'https://www.flutterfriends.dev',
+                'https://www.flutterconf.es',
               ),
             ),
             ListTile(
@@ -125,7 +113,7 @@ class SettingsView extends StatelessWidget {
               subtitle: const Text('View the full source code on GitHub'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrlString(
-                'https://github.com/felangel/flutter_and_friends',
+                'https://github.com/alfredobs97/flutterconf_app',
               ),
             ),
             ListTile(
@@ -138,7 +126,7 @@ class SettingsView extends StatelessWidget {
                   'assets/logo.png',
                   height: 120,
                 ),
-                applicationName: 'Flutter & Friends',
+                applicationName: 'FlutterConf',
               ),
             ),
             ListTile(
@@ -146,7 +134,7 @@ class SettingsView extends StatelessWidget {
               subtitle: const Text('View the privacy policy'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrlString(
-                'https://github.com/felangel/flutter_and_friends/blob/main/privacy.md',
+                'https://github.com/alfredobs97/flutterconf/blob/main/privacy.md',
               ),
             ),
             ListTile(
