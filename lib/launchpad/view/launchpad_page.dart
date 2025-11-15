@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_and_friends/favorites/favorites.dart';
-import 'package:flutter_and_friends/launchpad/launchpad.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
-import 'package:flutter_and_friends/speakers/speakers.dart';
-import 'package:flutter_and_friends/sponsors/sponsors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/launchpad/launchpad.dart';
+import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/speakers/speakers.dart';
+import 'package:flutterconf/sponsors/sponsors.dart';
 
 class LaunchpadPage extends StatelessWidget {
   const LaunchpadPage({super.key});

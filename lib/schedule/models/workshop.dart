@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
-import 'package:flutter_and_friends/speakers/speakers.dart';
+import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/speakers/speakers.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'workshop.g.dart';

@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/favorites/favorites.dart';
-import 'package:flutter_and_friends/launchpad/launchpad.dart';
-import 'package:flutter_and_friends/theme/theme.dart';
-import 'package:flutter_and_friends/updater/updater.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/launchpad/launchpad.dart';
+import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/updater/updater.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';

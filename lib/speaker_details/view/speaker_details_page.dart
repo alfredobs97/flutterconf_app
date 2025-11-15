@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/speakers/speakers.dart';
-import 'package:flutter_and_friends/twitter/twitter.dart';
+import 'package:flutterconf/speakers/speakers.dart';
+import 'package:flutterconf/twitter/twitter.dart';
 
 class SpeakerDetailsPage extends StatelessWidget {
   const SpeakerDetailsPage({required this.speaker, super.key});

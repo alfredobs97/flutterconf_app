@@ -1,4 +1,4 @@
-import 'package:flutter_and_friends/organizers/organizers.dart';
+import 'package:flutterconf/organizers/organizers.dart';
 
 const organizers = [
   alek,

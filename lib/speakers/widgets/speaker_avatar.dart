@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/speaker_details/speaker_details.dart';
-import 'package:flutter_and_friends/speakers/speakers.dart';
+import 'package:flutterconf/speaker_details/speaker_details.dart';
+import 'package:flutterconf/speakers/speakers.dart';
 
 class SpeakerAvatar extends StatelessWidget {
   const SpeakerAvatar({required this.speaker, super.key});

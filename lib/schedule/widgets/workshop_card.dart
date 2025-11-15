@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/extensions/extensions.dart';
-import 'package:flutter_and_friends/favorites/favorites.dart';
-import 'package:flutter_and_friends/location/location.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
-import 'package:flutter_and_friends/workshop_details/workshop_details.dart';
+import 'package:flutterconf/extensions/extensions.dart';
+import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/location/location.dart';
+import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/workshop_details/workshop_details.dart';
 
 class WorkshopCard extends StatelessWidget {
   const WorkshopCard({required this.workshop, super.key});

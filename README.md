@@ -1,4 +1,4 @@
-<h1 align="center">Flutter & Friends</h1>
+<h1 align="center">FlutterConf</h1>
 <p align="center">
   <a href="https://bloclibrary.dev"><img src="https://tinyurl.com/bloc-library?style=for-the-badge&color=black&labelColor=black" alt="Bloc Library"></a>
   <a href="https://shorebird.dev">    
@@ -14,9 +14,6 @@
 
 ![hero](./art/hero.png)
 
-<p align="center">The official <a href="https://www.flutterfriends.dev/">Flutter & Friends</a> conference app.</p>
+<p align="center">The official <a href="https://www.flutterconf.es/">FlutterConf</a> conference app.</p>
 
-<p align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.felangel.flutter_and_friends"><img alt="Get it on Google Play" src="art/google_play_badge.png" height="80px"/></a>
-  <a href="https://apps.apple.com/us/app/flutter-friends/id6462616068"><img alt="Get it on AppStore" src="art/appstore_badge.png" height="80px"/></a>
-</p>
+

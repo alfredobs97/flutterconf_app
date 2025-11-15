@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/speakers/speakers.dart';
-import 'package:flutter_and_friends/theme/theme.dart';
+import 'package:flutterconf/speakers/speakers.dart';
+import 'package:flutterconf/theme/theme.dart';
 
 class SpeakersPage extends StatelessWidget {
   const SpeakersPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
+import 'package:flutterconf/schedule/schedule.dart';
 
 class Schedule extends Equatable {
   const Schedule({required this.events});

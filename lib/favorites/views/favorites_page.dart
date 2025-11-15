@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/favorites/favorites.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
-import 'package:flutter_and_friends/theme/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/theme/widgets/widgets.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});

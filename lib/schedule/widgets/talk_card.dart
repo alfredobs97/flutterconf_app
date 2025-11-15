@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/extensions/extensions.dart';
-import 'package:flutter_and_friends/favorites/favorites.dart';
-import 'package:flutter_and_friends/location/location.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
-import 'package:flutter_and_friends/talk_details/talk_details.dart';
+import 'package:flutterconf/extensions/extensions.dart';
+import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/location/location.dart';
+import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/talk_details/talk_details.dart';
 
 class TalkCard extends StatelessWidget {
   const TalkCard({required this.talk, super.key});

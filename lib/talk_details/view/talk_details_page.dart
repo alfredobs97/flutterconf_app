@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/favorites/favorites.dart';
-import 'package:flutter_and_friends/location/location.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
-import 'package:flutter_and_friends/speaker_details/speaker_details.dart';
-import 'package:flutter_and_friends/speakers/speakers.dart';
-import 'package:flutter_and_friends/twitter/twitter.dart';
+import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/location/location.dart';
+import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/speaker_details/speaker_details.dart';
+import 'package:flutterconf/speakers/speakers.dart';
+import 'package:flutterconf/twitter/twitter.dart';
 import 'package:intl/intl.dart';
 
 class TalkDetailsPage extends StatelessWidget {

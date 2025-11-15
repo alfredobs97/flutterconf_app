@@ -1,4 +1,4 @@
-import 'package:flutter_and_friends/speakers/speakers.dart';
+import 'package:flutterconf/speakers/speakers.dart';
 
 const speakers = [
   albertWolszon,
