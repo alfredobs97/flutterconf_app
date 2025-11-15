@@ -1,9 +1,6 @@
-<h1 align="center">FlutterConf</h1>
+<h1 align="center">FlutterConf 🇪🇸</h1>
 <p align="center">
   <a href="https://bloclibrary.dev"><img src="https://tinyurl.com/bloc-library?style=for-the-badge&color=black&labelColor=black" alt="Bloc Library"></a>
-  <a href="https://shorebird.dev">    
-    <img alt="Powered by Shorebird" src="https://img.shields.io/endpoint?url=https://tinyurl.com/shorebirddev&style=for-the-badge">
-  </a>
   <a href="https://pub.dev/packages/very_good_analysis">
     <img alt="style: very good analysis" src="https://img.shields.io/badge/style-very_good_analysis-B22C89.svg?style=for-the-badge">
   </a>  
@@ -11,9 +8,12 @@
     <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge">
   </a>
 </p>
+<p align="center">
+<a data-flickr-embed="true" data-header="true" data-footer="true" data-context="true" href="https://www.flickr.com/photos/145521657@N07/54874401008/in/album-72177720329848772" title="PXL_20251017_154519765"><img src="https://live.staticflickr.com/65535/54874401008_aa25b6a70a_w.jpg" width="400" height="225" alt="PXL_20251017_154519765"/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
 
-![hero](./art/hero.png)
-
-<p align="center">The official <a href="https://www.flutterconf.es/">FlutterConf</a> conference app.</p>
+<p align="center">¡La app oficial de  <a href="https://flutterconfesp.web.app/">FlutterConf</a> donde podrás encontrar toda la info del evento! </p>
+<p align="center">
+🍴 Fork of the <a href="https://github.com/flutter-and-friends/flutter_and_friends">Flutter & Friends app</a> conference 🤜🤛</p>
 
 
