@@ -30,16 +30,12 @@ class ScheduleView extends StatelessWidget {
             onTap: (index) => context.read<ScheduleCubit>().toggleTab(index),
             tabs: const <Widget>[
               Tab(child: Text('Day 1')),
-              Tab(child: Text('Day 2')),
-              Tab(child: Text('Day 3')),
             ],
           ),
         ),
         body: TabBarView(
           children: [
             ScheduleListView(events: day1),
-            ScheduleListView(events: day2),
-            ScheduleListView(events: day3),
           ],
         ),
       ),
