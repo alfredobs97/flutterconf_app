@@ -99,7 +99,7 @@ class SettingsView extends StatelessWidget {
               subtitle: const Text('View the official website'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrlString(
-                'https://www.flutterconf.es',
+                'https://flutterconfesp.web.app/',
               ),
             ),
             ListTile(
@@ -136,12 +136,6 @@ class SettingsView extends StatelessWidget {
               onTap: () => launchUrlString(
                 'https://github.com/alfredobs97/flutterconf/blob/main/privacy.md',
               ),
-            ),
-            ListTile(
-              title: const Text('Powered by Shorebird'),
-              subtitle: const Text('Learn more about Shorebird'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => launchUrlString('https://shorebird.dev'),
             ),
           ],
         ),
