@@ -10,35 +10,45 @@ This document outlines the phased implementation plan for rebranding the "Flutte
     -   Created the `flutterconf-rebrand` branch.
     -   Created and received approval for the `MODIFICATION_DESIGN.md` document.
     -   Attempted to run tests, but no `test` directory was found. Proceeding without initial test run.
+    -   Updated `pubspec.yaml` with new name and description.
+    -   Updated `android/app/build.gradle.kts` with new `applicationId` and `namespace`.
+    -   Updated `android/app/src/main/AndroidManifest.xml` with new `android:label`.
+    -   Renamed Android package directories and updated `MainActivity.kt`.
+    -   Updated `ios/Runner/Info.plist` with new `CFBundleDisplayName` and `CFBundleName`.
+    -   Corrected `CFBundleIdentifier` in `ios/Runner/Info.plist` to use placeholder.
+    -   Updated `ios/Runner.xcodeproj/project.pbxproj` with new bundle identifiers.
+    -   Removed `nfc_manager` and `friends_badge` dependencies and related code.
+    -   User manually replaced `package:flutter_and_friends/` with `package:flutterconf/`.
+    -   Ran `fvm dart fix --apply` and `fvm flutter analyze`. Some `directives_ordering` info messages remain.
+    -   Ran `fvm dart format .`.
 
 ## Phase 1: Initial Setup and Verification
 
 -   [x] Run all tests to ensure the project is in a good state before starting modifications.
--   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
--   [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
+-   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
+-   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
+-   [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
 -   [ ] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
 
 ## Phase 2: App Name, Identifiers, and Basic Configuration
 
--   [ ] **pubspec.yaml:**
-    -   [ ] Change the `name` to `flutterconf`.
-    -   [ ] Change the `description` to "The official app for FlutterConf."
--   [ ] **Android:**
-    -   [ ] In `android/app/build.gradle`, change the `applicationId` to `es.flutterconf.app`.
-    -   [ ] In `android/app/src/main/AndroidManifest.xml`, change the `android:label` to "FlutterConf".
-    -   [ ] In `android/app/src/main/AndroidManifest.xml`, change the `package` attribute in the manifest tag to `es.flutterconf.app`.
-    -   [ ] Rename the directory structure under `android/app/src/main/kotlin` from `dev/flutterandfriends/app` to `es/flutterconf/app`.
-    -   [ ] Update the package declaration in `MainActivity.kt`.
--   [ ] **iOS:**
-    -   [ ] In `ios/Runner/Info.plist`, change `CFBundleName` to "FlutterConf".
-    -   [ ] In `ios/Runner/Info.plist`, change `CFBundleIdentifier` to `es.flutterconf.app`.
-    -   [ ] In `ios/Runner.xcodeproj/project.pbxproj`, replace all occurrences of the old bundle identifier (`dev.flutterandfriends.app`) with `es.flutterconf.app`.
--   [ ] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
--   [ ] Run the `dart_fix` tool to clean up the code.
--   [ ] Run the `analyze_files` tool one more time and fix any issues.
--   [ ] Run any tests to make sure they all pass.
--   [ ] Run `dart_format` to make sure that the formatting is correct.
+-   [x] **pubspec.yaml:**
+    -   [x] Change the `name` to `flutterconf`.
+    -   [x] Change the `description` to "The official app for FlutterConf."
+-   [x] **Android:**
+    -   [x] In `android/app/build.gradle.kts`, change the `applicationId` to `es.flutterconf.app`.
+    -   [x] In `android/app/src/main/AndroidManifest.xml`, change the `android:label` to "FlutterConf".
+    -   [x] Rename the directory structure under `android/app/src/main/kotlin` from `com/felangel/flutter_and_friends` to `es/flutterconf/app`.
+    -   [x] Update the package declaration in `MainActivity.kt`.
+-   [x] **iOS:**
+    -   [x] In `ios/Runner/Info.plist`, change `CFBundleDisplayName` to "FlutterConf".
+    -   [x] In `ios/Runner/Info.plist`, change `CFBundleName` to "FlutterConf".
+    -   [x] In `ios/Runner.xcodeproj/project.pbxproj`, replace all occurrences of the old bundle identifier (`com.felangel.flutter-and-friends`) with `es.flutterconf.app` and `com.felangel.flutter-and-friends.RunnerTests` with `es.flutterconf.app.RunnerTests`.
+-   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
+-   [x] Run the `dart_fix` tool to clean up the code.
+-   [x] Run the `analyze_files` tool one more time and fix any issues.
+-   [x] Run any tests to make sure they all pass.
+-   [x] Run `dart_format` to make sure that the formatting is correct.
 -   [ ] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 -   [ ] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 -   [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.

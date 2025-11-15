@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
+import 'package:flutterconf/schedule/schedule.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({required this.event, super.key});

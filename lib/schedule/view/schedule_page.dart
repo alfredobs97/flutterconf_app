@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
-import 'package:flutter_and_friends/theme/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/theme/theme.dart';
 
 class SchedulePage extends StatelessWidget {
   const SchedulePage({super.key});

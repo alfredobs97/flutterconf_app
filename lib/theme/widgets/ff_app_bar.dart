@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/settings/settings.dart';
+import 'package:flutterconf/settings/settings.dart';
 
 class FFAppBar extends AppBar {
   FFAppBar({super.bottom, super.key})

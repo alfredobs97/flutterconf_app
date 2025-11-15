@@ -1,4 +1,4 @@
-import 'package:flutter_and_friends/schedule/schedule.dart';
+import 'package:flutterconf/schedule/schedule.dart';
 
 interface class Event {
   const Event({

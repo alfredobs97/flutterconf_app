@@ -1,4 +1,4 @@
-package com.felangel.flutter_and_friends
+package es.flutterconf.app
 
 import io.flutter.embedding.android.FlutterActivity
 

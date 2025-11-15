@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/friends_badge/friends_badge.dart';
-import 'package:flutter_and_friends/organizers/organizers.dart';
-import 'package:flutter_and_friends/settings/settings.dart';
-import 'package:flutter_and_friends/theme/theme.dart';
-import 'package:flutter_and_friends/updater/updater.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/organizers/organizers.dart';
+import 'package:flutterconf/settings/settings.dart';
+import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/updater/updater.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -56,13 +55,6 @@ class SettingsView extends StatelessWidget {
             const ThemeToggle(),
             const SizedBox(height: 16),
             Text('Extras', style: headingStyle),
-            ListTile(
-              leading: const Icon(Icons.badge_outlined),
-              title: const Text('Friends Badge'),
-              subtitle: const Text('Customize your badge'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(FriendsBadgePage.route()),
-            ),
             ListTile(
               leading: const Icon(Icons.map),
               title: const Text('Activity Map'),

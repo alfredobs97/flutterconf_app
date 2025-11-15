@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_and_friends/favorites/favorites.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/schedule/schedule.dart';
 
 class FavoriteButton extends StatelessWidget {
   const FavoriteButton({required this.event, super.key});

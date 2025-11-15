@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/updater/updater.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/updater/updater.dart';
 
 class UpdateListener extends StatelessWidget {
   const UpdateListener({required this.child, super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_and_friends/schedule/schedule.dart';
+import 'package:flutterconf/schedule/schedule.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class LocationDetails extends StatelessWidget {
