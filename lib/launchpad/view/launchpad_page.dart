@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/favorites/favorites.dart';
 import 'package:flutterconf/launchpad/launchpad.dart';
+import 'package:flutterconf/pong/view/pong_page.dart';
 import 'package:flutterconf/schedule/schedule.dart';
 import 'package:flutterconf/speakers/speakers.dart';
 import 'package:flutterconf/sponsors/sponsors.dart';
@@ -47,6 +48,8 @@ class _LaunchpadBody extends StatelessWidget {
         return const SpeakersPage();
       case LaunchpadState.sponsors:
         return const SponsorsPage();
+      case LaunchpadState.pong:
+        return const PongPage();
     }
   }
 }
@@ -75,6 +78,10 @@ class _BottomNavigationBar extends StatelessWidget {
           label: 'Speakers',
         ),
         BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Sponsors'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.sports_esports),
+          label: 'Pong',
+        ),
       ],
     );
   }

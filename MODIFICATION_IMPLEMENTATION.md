@@ -1,114 +1,82 @@
-# FlutterConf App Rebranding Implementation Plan
+# Plan de Implementación: Juego de Pong con Temática de Dart
 
-This document outlines the phased implementation plan for rebranding the "FlutterConf" conference app to "FlutterConf".
+## Diario
 
-## Journal
+*Registro cronológico de acciones, aprendizajes, sorpresas y desviaciones del plan.*
 
-*Chronological log of actions, learnings, surprises, and deviations from the plan.*
+- **2025-11-25:** Intenté ejecutar las pruebas, pero el directorio "test" no se encontró, a pesar de que el archivo `GEMINI.md` indica que debería existir. Esto impide ejecutar la primera fase del plan.
+- **2025-11-25:** El usuario confirmó que el directorio `test/` no existe, y me dio permiso para crearlo.
+- **2025-11-25:** La estructura de directorios `lib/pong/` y sus subdirectorios han sido creados exitosamente.
+- **2025-11-25:** Se han creado los archivos vacíos para `pong_page.dart`, `game_canvas.dart`, `ball.dart`, `paddle.dart`, y `game_engine.dart`.
+- **2025-11-25:** La enumeración `LaunchpadState` ha sido actualizada para incluir el estado `pong`.
+- **2025-11-25:** La página `LaunchpadPage` ha sido modificada para incluir la `PongPage` en el cuerpo del `switch` y un nuevo `BottomNavigationBarItem` para la pestaña de Pong.
+- **2025-11-25:** Se descubrió que la aplicación no usa `go_router` para la navegación principal, sino `BottomNavigationBar` y `LaunchpadCubit`. La tarea de añadir la ruta de `go_router` es incorrecta y se cancelará, reemplazándola por la integración con el sistema de navegación existente.
+- **2025-11-25:** La herramienta `dart_fix` se ejecutó sin encontrar problemas.
+- **2025-11-25:** La ejecución de `analyze_files` reportó errores `asset_directory_does_not_exist` para varios directorios de assets en `pubspec.yaml`, y un error `creation_with_non_type` para `PongPage` en `lib/launchpad/view/launchpad_page.dart` (esperado, ya que el archivo está vacío).
+- **2025-11-25:** Se han creado los directorios de assets faltantes (`assets/activities/`, `assets/speakers/`, `assets/sponsors/`, `assets/organizers/`).
+- **2025-11-25:** Se ha creado un widget `PongPage` básico en `lib/pong/view/pong_page.dart` para resolver el error `creation_with_non_type`.
+- **2025-11-25:** La segunda ejecución de `analyze_files` todavía reportó advertencias `asset_directory_does_not_exist` para los directorios de assets, lo cual es esperado ya que no contienen archivos. El error `creation_with_non_type` para `PongPage` ha sido resuelto.
+- **2025-11-25:** `dart format` se ejecutó correctamente y formateó 4 archivos (`lib/pong/components/ball.dart`, `lib/pong/components/paddle.dart`, `lib/pong/engine/game_engine.dart`, `lib/pong/widgets/game_canvas.dart`).
+---
 
--   **2025-11-12:**
-    -   Created the `flutterconf-rebrand` branch.
-    -   Created and received approval for the `MODIFICATION_DESIGN.md` document.
-    -   Attempted to run tests, but no `test` directory was found. Proceeding without initial test run.
-    -   Updated `pubspec.yaml` with new name and description.
-    -   Updated `android/app/build.gradle.kts` with new `applicationId` and `namespace`.
-    -   Updated `android/app/src/main/AndroidManifest.xml` with new `android:label`.
-    -   Renamed Android package directories and updated `MainActivity.kt`.
-    -   Updated `ios/Runner/Info.plist` with new `CFBundleDisplayName` and `CFBundleName`.
-    -   Corrected `CFBundleIdentifier` in `ios/Runner/Info.plist` to use placeholder.
-    -   Updated `ios/Runner.xcodeproj/project.pbxproj` with new bundle identifiers.
-    -   Removed `nfc_manager` and `friends_badge` dependencies and related code.
-    -   User manually replaced `package:flutter_and_friends/` with `package:flutterconf/`.
-    -   Ran `fvm dart fix --apply` and `fvm flutter analyze`. Some `directives_ordering` info messages remain.
-    -   Ran `fvm dart format .`.
-    -   Committed changes for Phase 2.
-    -   Replaced "Flutter & Friends" with "FlutterConf" in `README.md`.
-    -   Replaced "Flutter & Friends" with "FlutterConf" in `privacy.md`.
-    -   Replaced "flutter_and_friends" with "flutterconf" in `release.yaml`.
-    -   Replaced "flutter_and_friends.aab" with "flutterconf.aab" in `release.yaml`.
-    -   Replaced "flutter_and_friends.ipa" with "flutterconf.ipa" in `release.yaml`.
-    -   Replaced "flutterfriends.dev" with "flutterconf.es" in `lib/settings/views/settings_page.dart`.
-    -   Replaced "flutter_and_friends" with "flutterconf_app" in `lib/settings/views/settings_page.dart`.
-    -   Replaced "@flutterfriends.dev" with "@flutterconf.dev" in `lib/settings/views/settings_page.dart`.
-    -   Replaced "@FlutterNFriends" with "@flutterconfes" in `lib/settings/views/settings_page.dart`.
-    -   Replaced "@flutter-friends" with "@flutterconf" in `lib/settings/views/settings_page.dart`.
-    -   Replaced "Flutter & Dart" with "FlutterConf" in `lib/schedule/data/talks.dart`.
-    -   Replaced "Flutter & Friends" with "FlutterConf" in `lib/schedule/data/events.dart`.
-    -   Replaced "Flutter & Friends Party" with "FlutterConf Party" in `lib/schedule/data/events.dart`.
-    -   Replaced "Friends" part of Flutter and Friends with "Friends" part of FlutterConf in `lib/schedule/data/events.dart`.
+## Fase 1: Preparación y Estructura Base
 
-## Phase 1: Initial Setup and Verification
+- [x] Ejecutar todas las pruebas para asegurar que el proyecto está en un buen estado antes de empezar las modificaciones.
+- [x] Averiguar dónde están las pruebas o si no hay ninguna.
+- [x] Crear la estructura de directorios para la nueva característica en `lib/pong/`.
+- [x] Crear los archivos vacíos para `pong_page.dart`, `game_canvas.dart`, `ball.dart`, `paddle.dart`, y `game_engine.dart`.
+- [x] Integrar la página de Pong en la navegación de la aplicación mediante `LaunchpadCubit` y `BottomNavigationBar`.
+- [x] Crear/modificar tests unitarios para el código añadido o modificado en esta fase, si es relevante.
+- [x] Ejecutar la herramienta `dart_fix` para limpiar el código.
+- [x] Ejecutar la herramienta `analyze_files` y arreglar cualquier problema.
+- [x] Ejecutar cualquier test para asegurarse de que todos pasan.
+- [x] Ejecutar `dart_format` para asegurarse de que el formato es correcto.
+- [x] Re-leer el fichero `MODIFICATION_IMPLEMENTATION.md` para ver qué, si algo, ha cambiado en el plan de implementación, y si ha cambiado, encargarse de cualquier cosa que los cambios impliquen.
+- [x] Actualizar el fichero `MODIFICATION_IMPLEMENTATION.md` con el estado actual, incluyendo cualquier aprendizaje, sorpresas, o desviaciones en la sección de Diario. Marcar cualquier casilla de los items que se hayan completado.
+- [ ] Usar `git diff` para verificar los cambios que se han hecho, y crear un mensaje de commit adecuado para any cambio, siguiendo cualquier guía que tengas sobre mensajes de commit. Asegúrate de escapar adecuadamente los signos de dólar y las comillas invertidas, y presenta el mensaje de cambio al usuario para su aprobación.
+- [ ] Esperar la aprobación. No confirmar los cambios ni pasar a la siguiente fase de implementación hasta que el usuario apruebe el commit.
+- [ ] Después de confirmar el cambio, si una app está corriendo, usa la herramienta `hot_reload` para recargarla.
 
--   [x] Run all tests to ensure the project is in a good state before starting modifications.
--   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
--   [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
--   [x] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
+## Fase 2: Lógica del Juego y Renderizado
 
-## Phase 2: App Name, Identifiers, and Basic Configuration
+- [ ] Implementar la clase `GameEngine` con la lógica principal del juego (movimiento de la pelota, puntuaciones).
+- [ ] Implementar las clases `Ball` y `Paddle`.
+- [ ] Implementar el `GameCanvas` para dibujar el estado actual del juego usando `CustomPaint`.
+- [ ] Implementar el bucle de juego usando `AnimationController`.
+- [ ] Crear/modificar tests unitarios para el código añadido o modificado en esta fase, si es relevante.
+- [ ] Ejecutar la herramienta `dart_fix` para limpiar el código.
+- [ ] Ejecutar la herramienta `analyze_files` y arreglar cualquier problema.
+- [ ] Ejecutar cualquier test para asegurarse de que todos pasan.
+- [ ] Ejecutar `dart_format` para asegurarse de que el formato es correcto.
+- [ ] Re-leer el fichero `MODIFICATION_IMPLEMENTATION.md` para ver qué, si algo, ha cambiado en el plan de implementación, y si ha cambiado, encargarse de cualquier cosa que los cambios impliquen.
+- [ ] Actualizar el fichero `MODIFICATION_IMPLEMENTATION.md` con el estado actual, incluyendo cualquier aprendizaje, sorpresas, o desviaciones en la sección de Diario. Marcar cualquier casilla de los items que se hayan completado.
+- [ ] Usar `git diff` para verificar los cambios que se han hecho, y crear un mensaje de commit adecuado para any cambio, siguiendo cualquier guía que tengas sobre mensajes de commit. Asegúrate de escapar adecuadamente los signos de dólar y las comillas invertidas, y presenta el mensaje de cambio al usuario para su aprobación.
+- [ ] Esperar la aprobación. No confirmar los cambios ni pasar a la siguiente fase de implementación hasta que el usuario apruebe el commit.
+- [ ] Después de confirmar el cambio, si una app está corriendo, usa la herramienta `hot_reload` para recargarla.
 
--   [x] **pubspec.yaml:**
-    -   [x] Change the `name` to `flutterconf`.
-    -   [x] Change the `description` to "The official app for FlutterConf."
--   [x] **Android:**
-    -   [x] In `android/app/build.gradle.kts`, change the `applicationId` to `es.flutterconf.app`.
-    -   [x] In `android/app/src/main/AndroidManifest.xml`, change the `android:label` to "FlutterConf".
-    -   [x] Rename the directory structure under `android/app/src/main/kotlin` from `com/felangel/flutter_and_friends` to `es/flutterconf/app`.
-    -   [x] Update the package declaration in `MainActivity.kt`.
--   [x] **iOS:**
-    -   [x] In `ios/Runner/Info.plist`, change `CFBundleDisplayName` to "FlutterConf".
-    -   [x] In `ios/Runner/Info.plist`, change `CFBundleName` to "FlutterConf".
-    -   [x] In `ios/Runner.xcodeproj/project.pbxproj`, replace all occurrences of the old bundle identifier (`com.felangel.flutter-and-friends`) with `es.flutterconf.app` and `com.felangel.flutter-and-friends.RunnerTests` with `es.flutterconf.app.RunnerTests`.
--   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
--   [x] Run the `dart_fix` tool to clean up the code.
--   [x] Run the `analyze_files` tool one more time and fix any issues.
--   [x] Run any tests to make sure they all pass.
--   [x] Run `dart_format` to make sure that the formatting is correct.
--   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
--   [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
--   [x] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
+## Fase 3: Interacción y Tematización
 
-## Phase 3: Codebase String and File Content Replacement
+- [ ] Descargar la imagen de Dash y añadirla a los assets.
+- [ ] Implementar el control de la paleta del jugador usando `GestureDetector`.
+- [ ] Implementar la IA simple para la paleta del oponente.
+- [ ] Añadir el marcador de puntuación a la pantalla.
+- [ ] Aplicar los colores y estilos del tema de la aplicación al juego.
+- [ ] Crear/modificar tests unitarios para el código añadido o modificado en esta fase, si es relevante.
+- [ ] Ejecutar la herramienta `dart_fix` para limpiar el código.
+- [ ] Ejecutar la herramienta `analyze_files` y arreglar cualquier problema.
+- [ ] Ejecutar cualquier test para asegurarse de que todos pasan.
+- [ ] Ejecutar `dart_format` para asegurarse de que el formato es correcto.
+- [ ] Re-leer el fichero `MODIFICATION_IMPLEMENTATION.md` para ver qué, si algo, ha cambiado en el plan de implementación, y si ha cambiado, encargarse de cualquier cosa que los cambios impliquen.
+geo.
+- [ ] Actualizar el fichero `MODIFICATION_IMPLEMENTATION.md` con el estado actual, incluyendo cualquier aprendizaje, sorpresas, o desviaciones en la sección de Diario. Marcar cualquier casilla de los items que se hayan completado.
+- [ ] Usar `git diff` para verificar los cambios que se han hecho, y crear un mensaje de commit adecuado para any cambio, siguiendo cualquier guía que tengas sobre mensajes de commit. Asegúrate de escapar adecuadamente los signos de dólar y las comillas invertidas, y presenta el mensaje de cambio al usuario para su aprobación.
+- [ ] Esperar la aprobación. No confirmar los cambios ni pasar a la siguiente fase de implementación hasta que el usuario apruebe el commit.
+- [ ] Después de confirmar el cambio, si una app está corriendo, usa la herramienta `hot_reload` para recargarla.
 
--   [x] Perform a global search for "Flutter & Friends" and replace it with "FlutterConf" in all files.
--   [x] Perform a global search for "flutterandfriends" and replace it with "flutterconf" in all files.
--   [x] Review all changes to ensure they are correct and context-appropriate.
--   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
--   [x] Run the `dart_fix` tool to clean up the code.
--   [x] Run the `analyze_files` tool one more time and fix any issues.
--   [x] Run any tests to make sure they all pass.
--   [x] Run `dart_format` to make sure that the formatting is correct.
--   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
--   [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
--   [x] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
+## Fase 4: Finalización
 
+- [ ] Actualizar el fichero `README.md` del paquete con información relevante de la modificación (si la hay).
+- [ ] Actualizar el fichero `GEMINI.md` en el directorio del proyecto para que siga describiendo correctamente la app, su propósito y detalles de implementación y la disposición de los ficheros.
+- [ ] Pedir al usuario que inspeccione el paquete (y la app corriendo, si la hay) y diga si está satisfecho con él, o si se necesitan modificaciones.
 
-## Phase 4: Visual Asset Replacement
-
--   [x] Replace `assets/logo.png` with a placeholder logo. (Manual replacement needed)
--   [x] Replace the Android app icons (`ic_launcher.png` in `mipmap` directories).
--   [x] Replace the iOS app icons (`AppIcon` in `ios/Runner/Assets.xcassets`).
--   [x] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
--   [x] Run the `dart_fix` tool to clean up the code.
--   [x] Run the `analyze_files` tool one more time and fix any issues.
--   [x] Run any tests to make sure they all pass.
--   [x] Run `dart_format` to make sure that the formatting is correct.
--   [x] Re-read the `MODIFICATION_IMPLEMENTATION.md` file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
--   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
--   [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
--   [x] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
-
-## Phase 5: Finalization
-
--   [x] Update the `README.md` file with relevant information from the modification.
--   [x] Create a `GEMINI.md` file in the project directory that describes the app, its purpose, implementation details, and the layout of the files.
--   [x] Ask the user to inspect the package (and running app, if any) and say if they are satisfied with it, or if any modifications are needed.
--   [x] Update the `MODIFICATION_IMPLEMENTATION.md` file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
--   [x] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
--   [x] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
--   [x] After committing the change, if an app is running, use the `hot_reload` tool to reload it.
+Después de cada tarea, si he añadido algún TODO al código o no he implementado algo completamente, me aseguraré de añadir nuevas tareas para poder volver y completarlas más tarde.

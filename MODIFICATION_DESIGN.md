@@ -1,91 +1,99 @@
-# FlutterConf App Rebranding Modification Design
+# Diseño de Modificación: Juego de Pong con Temática de Dardo
 
-## Overview
+## Descripción General
 
-This document outlines the design for rebranding the "Flutter & Friends" conference app to "FlutterConf". This includes changing the app's name, identifiers, visual assets, and all user-facing strings that refer to the old brand.
+Esta modificación introduce una nueva función en la aplicación FlutterConf: un sencillo juego de Pong con una temática de Dart/Flutter. El juego se podrá jugar en una nueva pestaña de la aplicación.
 
-## Detailed Analysis of the Goal or Problem
+## Análisis Detallado
 
-The goal is to completely rebrand the existing application from "Flutter & Friends" to "FlutterConf". This is not just a simple string replacement, but a comprehensive change that affects the app's identity across different platforms (iOS and Android) and its visual presentation.
+El objetivo es crear un juego de Pong simple y divertido que se integre en la aplicación existente. Los requisitos son:
 
-The key areas to address are:
+- El juego debe estar en una nueva pestaña.
+- La pelota del juego será Dash, la mascota de Flutter.
+- El juego tendrá un marcador de puntuación.
+- El jugador controlará una paleta para golpear la pelota.
+- La otra paleta será controlada por una IA simple.
 
-1.  **Application Name:** The name displayed on the user's home screen and within the app must be changed from "Flutter & Friends" to "FlutterConf".
-2.  **Application Identifiers:** The unique identifiers for the app on both Android (`applicationId`) and iOS (`PRODUCT_BUNDLE_IDENTIFIER`) must be updated to `es.flutterconf.app`. This is crucial for app store listings and updates.
-3.  **Visual Assets:** All logos, icons, and other brand-specific imagery need to be replaced with new "FlutterConf" assets. Initially, these will be placeholder assets.
-4.  **Codebase Strings:** All hardcoded strings in the Dart code that refer to "Flutter & Friends" must be updated to "FlutterConf".
-5.  **Configuration Files:** Various configuration files for Android, iOS, and the Flutter project itself will need to be updated to reflect the new name and identifiers.
+## Alternativas Consideradas
 
-## Alternatives Considered
+### Usando un Motor de Juegos como Flame
 
-### Manual vs. Automated Rebranding
+Flame es un popular motor de juegos para Flutter. Proporciona un bucle de juego, detección de colisiones, sprites y otras características útiles que podrían acelerar el desarrollo.
 
-*   **Manual Approach:** This involves manually finding and replacing all occurrences of the old brand name and identifiers. This approach provides full control but is tedious and prone to human error. Given the number of files to modify, it's easy to miss something.
-*   **Automated Approach:** Using a combination of scripts and IDE features to perform the renaming. For package name changes, there are third-party packages like `change_app_package_name` that can automate the process.
+- **Ventajas:** Desarrollo más rápido, más características (si se desean en el futuro), buena documentación.
+- **Desventajas:** Añade una nueva dependencia considerable a la aplicación, lo que podría aumentar el tamaño de la misma. Para un juego tan simple como el Pong, puede ser una exageración.
 
-This design will use a hybrid approach. For the application identifiers, we will use an automated approach where possible to avoid errors. For text and asset replacements, a more manual (but tool-assisted) approach will be used to ensure correctness and context.
+### Usando un `StatefulWidget` y `CustomPaint`
 
-## Detailed Design for the Modification
+Este enfoque implica construir el juego desde cero utilizando las herramientas que Flutter proporciona de forma nativa.
 
-The modification will be performed in a structured manner to ensure all aspects of the rebranding are covered.
+- **Ventajas:** No se necesitan dependencias adicionales, control total sobre el código, es una buena oportunidad para aprender sobre bucles de juego y renderizado personalizado en Flutter.
+- **Desventajas:** Requiere más código para escribir, la detección de colisiones y la física del juego deben ser implementadas manualmente.
 
-### 1. Application Name Change
+### Decisión
 
--   **Android:** Modify `android/app/src/main/AndroidManifest.xml` to change the `android:label` attribute in the `<application>` tag to "FlutterConf".
--   **iOS:** Modify `ios/Runner/Info.plist` to change the `CFBundleName` string value to "FlutterConf".
+Para este caso, la simplicidad es clave. Dado que el juego de Pong es relativamente simple, el enfoque de `StatefulWidget` y `CustomPaint` es el más adecuado. Evita añadir dependencias innecesarias y mantiene el código base ligero.
 
-### 2. Application Identifier Change
+## Diseño Detallado
 
--   **Android:**
-    1.  Modify `android/app/build.gradle` to change the `applicationId` in the `defaultConfig` block to `es.flutterconf.app`.
-    2.  Modify `android/app/src/main/AndroidManifest.xml` to change the `package` attribute in the `<manifest>` tag to `es.flutterconf.app`.
-    3.  Rename the directory structure under `android/app/src/main/kotlin` (or `java`) to match the new package name. For example, if the old package was `dev.flutterandfriends.app`, the new structure will be `es/flutterconf/app`.
-    4.  Update the `package` declaration in `MainActivity.kt` (or `MainActivity.java`).
--   **iOS:**
-    1.  Modify `ios/Runner/Info.plist` to change the `CFBundleIdentifier` string value to `es.flutterconf.app`.
-    2.  Modify `ios/Runner.xcodeproj/project.pbxproj` to update the `PRODUCT_BUNDLE_IDENTIFIER` to `es.flutterconf.app`. This is best done via Xcode, but can be done with a careful find-and-replace.
+### Estructura de Archivos
 
-### 3. Visual Asset Replacement
+Se creará un nuevo directorio de características en `lib/pong/` con la siguiente estructura:
 
--   **Logo:** The existing `assets/logo.png` will be replaced with a placeholder logo for "FlutterConf".
--   **App Icons:** The platform-specific app icons will be replaced with placeholder icons. This involves updating the `ic_launcher.png` files in various `mipmap` directories for Android, and the `AppIcon` image set in `ios/Runner/Assets.xcassets` for iOS.
+```
+lib/
+└── pong/
+    ├── view/
+    │   └── pong_page.dart
+    ├── widgets/
+    │   └── game_canvas.dart
+    ├── components/
+    │   ├── ball.dart
+    │   └── paddle.dart
+    └── engine/
+        └── game_engine.dart
+```
 
-### 4. Codebase String and File Content Replacement
+- `pong_page.dart`: Será la página principal del juego, accesible desde una nueva pestaña.
+- `game_canvas.dart`: Un `StatefulWidget` que contendrá el bucle de juego y usará un `CustomPaint` para renderizar el juego.
+- `ball.dart`: Una clase que representa la pelota (Dash).
+- `paddle.dart`: Una clase que representa las paletas.
+- `game_engine.dart`: Contendrá la lógica del juego, como el movimiento de la pelota y las paletas, la detección de colisiones y la puntuación.
 
--   A global search for "Flutter & Friends" (and variations like "flutterandfriends") will be performed across the entire project.
--   All occurrences will be replaced with "FlutterConf" (or `flutterconf` for code-style references).
--   This includes, but is not limited to:
-    -   `pubspec.yaml`: The `name` and `description` of the package.
-    -   `README.md`: The project title and description.
-    -   Dart files in the `lib/` directory.
-    -   Configuration files in the `.github/` directory.
+### Lógica del Juego
 
-## Diagrams
+- **Bucle de Juego:** Se usará un `AnimationController` como el bucle de juego principal para actualizar el estado del juego en cada fotograma.
+- **Renderizado:** Un `CustomPaint` dibujará los elementos del juego (paletas, pelota, puntuación) en el lienzo.
+- **Entrada del Usuario:** Un `GestureDetector` detectará los gestos de arrastre del usuario para mover la paleta del jugador.
+- **IA del Oponente:** La paleta del oponente seguirá la posición 'y' de la pelota con un ligero retraso para que sea posible ganarle.
 
-### Rebranding Process Flow
+### Tematización
+
+- **La Pelota:** Se usará una imagen de Dash. La imagen se descargará de [esta URL](https://upload.wikimedia.org/wikipedia/commons/4/47/Dash_the_dart_mascot.png) y se añadirá a los assets de la aplicación.
+- **Las Paletas:** Serán rectángulos simples, con el color primario del tema de la aplicación para que coincida con el estilo general.
+- **Fondo:** Un color de fondo oscuro que contraste bien con los elementos del juego.
+
+### Navegación
+
+Se añadirá una nueva entrada a la navegación principal de la aplicación. Será necesario investigar la implementación actual de la navegación (usando `go_router`) para añadir la nueva pestaña `Pong`.
+
+### Diagramas
 
 ```mermaid
 graph TD
-    A[Start] --> B{Identify Rebranding Areas};
-    B --> C[App Name];
-    B --> D[App Identifiers];
-    B --> E[Visual Assets];
-    B --> F[Codebase Strings];
-    C --> G{Update AndroidManifest.xml & Info.plist};
-    D --> H{Update build.gradle & Info.plist};
-    D --> I[Rename Android package directories];
-    E --> J[Replace logo.png & app icons];
-    F --> K[Search and replace strings in codebase];
-    G & H & I & J & K --> L[Clean and rebuild project];
-    L --> M[Test on Android and iOS];
-    M --> N[End];
+    A[PongPage] --> B[GameCanvas];
+    B --> C[CustomPaint];
+    B --> D[GameEngine];
+    D --> E[Ball];
+    D --> F[Paddle];
 ```
 
-## Summary of the Design
+## Resumen
 
-This design document proposes a comprehensive plan to rebrand the "Flutter & Friends" app to "FlutterConf". The plan covers changes to the app's name, identifiers, visual assets, and codebase strings. It advocates for a hybrid approach of automated and manual changes to ensure accuracy and completeness. The process will be followed by a thorough cleaning, rebuilding, and testing of the application on both Android and iOS platforms.
+El diseño propone una implementación autónoma y sencilla de un juego de Pong dentro de la aplicación, utilizando las herramientas nativas de Flutter. Esto minimiza el impacto en el resto de la aplicación y evita dependencias externas.
 
-## References
+## Referencias
 
--   [How to change your package name in Flutter](https://medium.com/flutter-community/how-to-change-your-package-name-in-flutter-97b355c1f43c)
--   [Renaming a Flutter app](https://docs.flutter.dev/deployment/android#renaming-the-package)
+- [Building a Simple Game in Flutter](https://docs.flutter.dev/ui/layout/tutorial)
+- [CustomPaint in Flutter](https://api.flutter.dev/flutter/widgets/CustomPaint-class.html)
+- [AnimationController Class](https://api.flutter.dev/flutter/animation/AnimationController-class.html)
