@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterconf/pong/widgets/game_canvas.dart';
 
 class PongPage extends StatelessWidget {
   const PongPage({super.key});
@@ -9,9 +10,7 @@ class PongPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pong Game'),
       ),
-      body: const Center(
-        child: Text('Welcome to Pong!'),
-      ),
+      body: const GameCanvas(),
     );
   }
 }

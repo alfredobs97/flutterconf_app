@@ -13,7 +13,7 @@ The app is built using Flutter, a UI toolkit for building natively compiled appl
 Key implementation aspects include:
 
 -   **State Management:** The app utilizes the `bloc` library for state management, ensuring a clear separation of concerns and predictable state changes.
--   **Navigation:** `go_router` is used for declarative routing, enabling deep linking and robust navigation within the application.
+-   **Navigation:** The main navigation is handled by a `BottomNavigationBar` in the `LaunchpadPage`, which uses a `LaunchpadCubit` to switch between different pages.
 -   **Theming:** The app supports both light and dark themes, with a centralized `ThemeData` object for consistent styling across the application. Custom design tokens are implemented using `ThemeExtension`.
 -   **Asset Management:** Images and other assets are managed within the `assets/` directory and declared in `pubspec.yaml`.
 -   **API Integration:** (If applicable, describe how the app interacts with any backend APIs, e.g., for fetching schedule data, speaker information, etc.)
@@ -47,12 +47,18 @@ The project follows a standard Flutter project structure with additional organiz
     -   `twitter/`: (Describe purpose)
     -   `updater/`: (Describe purpose)
     -   `workshop_details/`: Feature-specific code for individual workshop details.
+    -   `pong/`: Feature-specific code for the Pong game.
+        -   `components/`: Game components like Ball and Paddle.
+        -   `engine/`: Game logic and state management.
+        -   `view/`: UI widgets and screens for the feature.
+        -   `widgets/`: Reusable widgets specific to the feature.
 -   `assets/`: Contains static assets like images.
     -   `logo.png`: Application logo.
     -   `activities/`: Images related to activities.
     -   `organizers/`: Images of organizers.
     -   `speakers/`: Images of speakers.
     -   `sponsors/`: Images of sponsors.
+    -   `pong/`: Images for the Pong game.
 -   `art/`: Contains marketing and promotional art assets.
 -   `android/`: Android-specific project files.
 -   `ios/`: iOS-specific project files.
