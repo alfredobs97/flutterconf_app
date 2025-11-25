@@ -16,4 +16,15 @@
 <p align="center">
 🍴 Fork of the <a href="https://github.com/flutter-and-friends/flutter_and_friends">Flutter & Friends app</a> conference 🤜🤛</p>
 
+---
+
+## ✨ Features
+
+- 📅 **Schedule:** View the full conference schedule.
+- 🗣️ **Speakers:** See the list of speakers and their talks.
+- ⭐ **Favorites:** Mark your favorite talks and create your own personal schedule.
+-  sponsors
+- 📍 **Location:** Find your way to the conference venue.
+- 🎮 **Pong Game:** A simple Pong game with a Dart theme.
+
 
