@@ -1,0 +1,39 @@
+import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+sealed class AuthState extends Equatable {
+  const AuthState();
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class AuthLoading extends AuthState {
+  const AuthLoading();
+}
+
+final class Authenticated extends AuthState {
+  const Authenticated(this.user);
+
+  final User user;
+
+  @override
+  List<Object?> get props => [user];
+}
+
+final class Guest extends AuthState {
+  const Guest();
+}
+
+final class Unauthenticated extends AuthState {
+  const Unauthenticated();
+}
+
+final class AuthError extends AuthState {
+  const AuthError(this.message);
+
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
