@@ -6,6 +6,7 @@ import 'package:flutterconf/launchpad/launchpad.dart';
 import 'package:flutterconf/schedule/schedule.dart';
 import 'package:flutterconf/speakers/speakers.dart';
 import 'package:flutterconf/sponsors/sponsors.dart';
+import 'package:flutterconf/profile/view/profile_page.dart';
 
 class LaunchpadPage extends StatelessWidget {
   const LaunchpadPage({super.key});
@@ -47,6 +48,8 @@ class _LaunchpadBody extends StatelessWidget {
         return const SpeakersPage();
       case LaunchpadState.sponsors:
         return const SponsorsPage();
+      case LaunchpadState.profile:
+        return const ProfilePage();
     }
   }
 }
@@ -75,6 +78,7 @@ class _BottomNavigationBar extends StatelessWidget {
           label: 'Speakers',
         ),
         BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Sponsors'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
     );
   }

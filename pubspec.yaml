@@ -23,6 +23,9 @@ dependencies:
   pub_semver: ^2.1.4
   shorebird_code_push: ^2.0.2
   url_launcher: ^6.0.0
+  firebase_core: ^3.10.1
+  firebase_auth: ^5.4.1
+  google_sign_in: ^6.2.2
 
 dev_dependencies:
   bloc_lint: ^0.3.2
@@ -31,13 +34,11 @@ dev_dependencies:
     sdk: flutter
   json_serializable: ^6.8.0
   very_good_analysis: ^9.0.0
+  mocktail: ^1.0.4
+  bloc_test: ^10.0.0
 
 flutter:
   assets:
     - assets/
-    - assets/activities/
-    - assets/speakers/
-    - assets/sponsors/
-    - assets/organizers/
     - shorebird.yaml
   uses-material-design: true
