@@ -84,19 +84,42 @@ class AppView extends StatelessWidget {
       darkTheme: darkTheme,
       home: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+          switch (state) {
+            case AuthError():
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            case AuthConflict():
+              showDialog<void>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Account Already Exists'),
+                  content: Text(
+                    'An account already exists with ${state.email}. '
+                    'Please sign in with your original provider.',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            default:
+              break;
           }
         },
         child: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) => switch (state) {
-            Authenticated() || Guest() => const UpdateListener(child: LaunchpadPage()),
+            Authenticated() ||
+            Guest() => const UpdateListener(child: LaunchpadPage()),
             AuthLoading() => const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              ),
-            Unauthenticated() || AuthError() => const LoginPage(),
+              body: Center(child: CircularProgressIndicator()),
+            ),
+            Unauthenticated() ||
+            AuthError() ||
+            AuthConflict() => const LoginPage(),
           },
         ),
       ),
