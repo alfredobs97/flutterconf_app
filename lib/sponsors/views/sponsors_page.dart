@@ -32,16 +32,16 @@ class SponsorsListView extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       children: [
         Text(
-          'Platinum Sponsors',
+          'Sponsors',
           style: headingStyle,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
-        ...platinumSponsors.map((sponsor) => SponsorItem(sponsor: sponsor)),
+        ...sponsors.map((sponsor) => SponsorItem(sponsor: sponsor)),
         const SizedBox(height: 32),
-        Text('Gold Sponsors', style: headingStyle, textAlign: TextAlign.center),
+        Text('Collaborators', style: headingStyle, textAlign: TextAlign.center),
         const SizedBox(height: 16),
-        ...goldSponsors.map((sponsor) => SponsorItem(sponsor: sponsor)),
+        ...collaborators.map((sponsor) => SponsorItem(sponsor: sponsor)),
         const SizedBox(height: 32),
         Text('Together with', style: headingStyle, textAlign: TextAlign.center),
         const SizedBox(height: 16),
@@ -70,7 +70,7 @@ class SponsorItem extends StatelessWidget {
           child: Center(
             child: FractionallySizedBox(
               widthFactor: 0.5,
-              child: Image.asset(sponsor.logo),
+              child: Image.network(sponsor.logo),
             ),
           ),
         ),

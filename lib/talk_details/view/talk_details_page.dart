@@ -115,7 +115,7 @@ class SpeakerInfo extends StatelessWidget {
                     backgroundColor: theme.colorScheme.primary.withAlpha(100),
                     child: CircleAvatar(
                       radius: avatarSize / 2,
-                      backgroundImage: AssetImage(speaker.avatar),
+                      backgroundImage: NetworkImage(speaker.avatar),
                     ),
                   ),
                 ),
