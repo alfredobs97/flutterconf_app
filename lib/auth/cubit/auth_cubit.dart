@@ -1,18 +1,22 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/auth/auth.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 export 'auth_state.dart';
 
-class AuthCubit extends Cubit<AuthState> {
+class AuthCubit extends HydratedCubit<AuthState> {
   AuthCubit({required AuthRepository authRepository})
-      : _authRepository = authRepository,
-        super(const Unauthenticated()) {
+    : _authRepository = authRepository,
+      super(
+        authRepository.currentUser != null
+            ? Authenticated(authRepository.currentUser!)
+            : const Unauthenticated(),
+      ) {
     _userSubscription = _authRepository.user.listen(
       (user) {
-        if (state is Guest) {
+        if (state is Guest && user == null) {
           return;
         }
 
@@ -24,12 +28,47 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
   late final StreamSubscription<User?> _userSubscription;
 
+  @override
+  AuthState? fromJson(Map<String, dynamic> json) {
+    final status = json['status'] as String?;
+
+    if (status == null) {
+      return const Unauthenticated();
+    }
+
+    switch (status) {
+      case 'Guest':
+        return const Guest();
+      case 'Authenticated':
+        return Authenticated(_authRepository.currentUser!);
+      case 'Unauthenticated':
+        return const Unauthenticated();
+      case 'AuthError':
+        return const AuthError('Log in failed.');
+      case 'AuthConflict':
+        return AuthConflict(email: _authRepository.currentUser!.email!);
+      default:
+        return const Unauthenticated();
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AuthState state) {
+    return {
+      'status': state.stateName,
+    };
+  }
+
   Future<void> logInWithGoogle() async {
     emit(const AuthLoading());
     try {
       await _authRepository.logInWithGoogle();
-    } catch (e) {
-      emit(AuthError(e.toString()));
+    } on AccountConflictFailure catch (e) {
+      emit(AuthConflict(email: e.email));
+    } on LogInCanceledFailure {
+      emit(const Unauthenticated());
+    } on LogInWithGoogleFailure {
+      emit(const AuthError('Log in with Google failed.'));
     }
   }
 
@@ -37,8 +76,12 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthLoading());
     try {
       await _authRepository.logInWithGithub();
-    } catch (e) {
-      emit(AuthError(e.toString()));
+    } on AccountConflictFailure catch (e) {
+      emit(AuthConflict(email: e.email));
+    } on LogInCanceledFailure {
+      emit(const Unauthenticated());
+    } on LogInWithGithubFailure {
+      emit(const AuthError('Log in with GitHub failed.'));
     }
   }
 
