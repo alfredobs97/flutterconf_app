@@ -34,59 +34,97 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.lock_person_rounded,
-                      size: 64,
-                      color: Colors.blueAccent,
+                    Image.asset('assets/logo.png', height: 80),
+                    const SizedBox(height: 32),
+                    Text(
+                      'FlutterConf 2026',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.5,
+                          ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Your essential companion to stay updated on '
+                      'sessions, speakers, and events.',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Welcome to FlutterConf',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Scan badges and connect with others',
+                      'Sign in to get your personalized badge and scan others '
+                      'to connect. You can also explore the conference as a guest.',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).hintColor,
-                          ),
+                        color: Theme.of(context).colorScheme.outline,
+                        height: 1.5,
+                      ),
                     ),
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 40),
                     _LoginButton(
-                      onPressed: () => context.read<AuthCubit>().logInWithGoogle(),
+                      onPressed: () =>
+                          context.read<AuthCubit>().logInWithGoogle(),
                       icon: FontAwesomeIcons.google,
                       label: 'Continue with Google',
-                      color: Colors.white,
-                      textColor: Colors.black87,
+                      color: Theme.of(context).colorScheme.surface,
+                      textColor: Theme.of(context).colorScheme.onSurface,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                     _LoginButton(
-                      onPressed: () => context.read<AuthCubit>().logInWithGithub(),
+                      onPressed: () =>
+                          context.read<AuthCubit>().logInWithGithub(),
                       icon: FontAwesomeIcons.github,
                       label: 'Continue with GitHub',
-                      color: Colors.black87,
-                      textColor: Colors.white,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      textColor: Theme.of(context).colorScheme.surface,
                     ),
-                    const SizedBox(height: 16),
-                    OutlinedButton(
-                      onPressed: () => context.read<AuthCubit>().continueAsGuest(),
-                      style: OutlinedButton.styleFrom(
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'OR',
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Theme.of(context).colorScheme.outlineVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    TextButton(
+                      onPressed: () =>
+                          context.read<AuthCubit>().continueAsGuest(),
+                      style: TextButton.styleFrom(
                         minimumSize: const Size(double.infinity, 56),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        side: BorderSide(color: Colors.grey.shade300),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Continue as Guest',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black54,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     ),
@@ -118,22 +156,28 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLightColor = color == Theme.of(context).colorScheme.surface;
     return ElevatedButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        foregroundColor: textColor,
-        minimumSize: const Size(double.infinity, 56),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: color == Colors.white
-              ? BorderSide(color: Colors.grey.shade300)
-              : BorderSide.none,
-        ),
-        elevation: 0,
-      ).copyWith(
-        overlayColor: WidgetStateProperty.all(Colors.black.withOpacity(0.05)),
-      ),
+      style:
+          ElevatedButton.styleFrom(
+            backgroundColor: color,
+            foregroundColor: textColor,
+            minimumSize: const Size(double.infinity, 56),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: isLightColor
+                  ? BorderSide(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                    )
+                  : BorderSide.none,
+            ),
+            elevation: 0,
+          ).copyWith(
+            overlayColor: WidgetStateProperty.all(
+              textColor.withOpacity(0.05),
+            ),
+          ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
