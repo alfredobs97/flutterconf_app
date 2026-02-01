@@ -26,7 +26,7 @@ class OrganizerAvatar extends StatelessWidget {
               tag: organizer.name,
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage(organizer.avatar),
+                backgroundImage: NetworkImage(organizer.avatar),
               ),
             ),
           ),
