@@ -65,7 +65,7 @@ class WorkshopCard extends StatelessWidget {
                         tag: speaker.name,
                         child: CircleAvatar(
                           radius: 24,
-                          backgroundImage: AssetImage(speaker.avatar),
+                          backgroundImage: NetworkImage(speaker.avatar),
                         ),
                       ),
                       const SizedBox(width: 16),
