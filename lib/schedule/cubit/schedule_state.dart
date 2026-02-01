@@ -1,3 +1,3 @@
 part of 'schedule_cubit.dart';
 
-enum ScheduleState { day1, day2, day3 }
+enum ScheduleState { day1Morning, day1Evening, day2Morning }

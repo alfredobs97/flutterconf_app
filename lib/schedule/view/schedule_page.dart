@@ -29,13 +29,32 @@ class ScheduleView extends StatelessWidget {
           bottom: TabBar(
             onTap: (index) => context.read<ScheduleCubit>().toggleTab(index),
             tabs: const <Widget>[
-              Tab(child: Text('Day 1')),
+              Tab(child: Text('Day 1 Morning')),
+              Tab(child: Text('Day 1 Evening')),
+              Tab(child: Text('Day 2 Morning')),
             ],
           ),
         ),
         body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
-            ScheduleListView(events: day1),
+            ScheduleListView(
+              events: allEvents
+                  .where(
+                    (e) => e.startTime.day == 17 && e.startTime.hour < 14,
+                  )
+                  .toList(),
+            ),
+            ScheduleListView(
+              events: allEvents
+                  .where(
+                    (e) => e.startTime.day == 17 && e.startTime.hour >= 14,
+                  )
+                  .toList(),
+            ),
+            ScheduleListView(
+              events: allEvents.where((e) => e.startTime.day == 18).toList(),
+            ),
           ],
         ),
       ),

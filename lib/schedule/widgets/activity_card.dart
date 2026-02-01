@@ -53,7 +53,7 @@ class ActivityCard extends StatelessWidget {
                   if (activity.image != null) ...[
                     CircleAvatar(
                       radius: 32,
-                      backgroundImage: AssetImage(activity.image!),
+                      backgroundImage: NetworkImage(activity.image!),
                     ),
                     const SizedBox(width: 16),
                   ],

@@ -3,7 +3,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'schedule_state.dart';
 
 class ScheduleCubit extends HydratedCubit<ScheduleState> {
-  ScheduleCubit() : super(ScheduleState.day1);
+  ScheduleCubit() : super(ScheduleState.day1Morning);
 
   void toggleTab(int index) => emit(ScheduleState.values[index]);
 
