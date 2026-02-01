@@ -1,16 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterconf/auth/data/auth_repository.dart';
+import 'package:flutterconf/auth/auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
 class MockGoogleSignIn extends Mock implements GoogleSignIn {}
+
 class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
-class MockGoogleSignInAuthentication extends Mock implements GoogleSignInAuthentication {}
+
+class MockGoogleSignInAuthentication extends Mock
+    implements GoogleSignInAuthentication {}
+
 class MockUser extends Mock implements User {}
+
 class MockUserCredential extends Mock implements UserCredential {}
+
 class FakeAuthCredential extends Fake implements AuthCredential {}
+
 class FakeAuthProvider extends Fake implements AuthProvider {}
 
 void main() {
@@ -35,8 +43,10 @@ void main() {
   group('AuthRepository', () {
     test('user stream emits auth state changes', () {
       final user = MockUser();
-      when(() => firebaseAuth.authStateChanges()).thenAnswer((_) => Stream.value(user));
-      
+      when(
+        () => firebaseAuth.authStateChanges(),
+      ).thenAnswer((_) => Stream.value(user));
+
       expect(authRepository.user, emits(user));
     });
 
@@ -44,14 +54,19 @@ void main() {
       test('signs in with google and signs into firebase', () async {
         final googleAccount = MockGoogleSignInAccount();
         final googleAuth = MockGoogleSignInAuthentication();
-        
-        when(() => googleSignIn.signIn()).thenAnswer((_) async => googleAccount);
-        when(() => googleAccount.authentication).thenAnswer((_) async => googleAuth);
+
+        when(
+          () => googleSignIn.signIn(),
+        ).thenAnswer((_) async => googleAccount);
+        when(
+          () => googleAccount.authentication,
+        ).thenAnswer((_) async => googleAuth);
         when(() => googleAuth.accessToken).thenReturn('token');
         when(() => googleAuth.idToken).thenReturn('id');
-        
-        when(() => firebaseAuth.signInWithCredential(any()))
-            .thenAnswer((_) async => MockUserCredential());
+
+        when(
+          () => firebaseAuth.signInWithCredential(any()),
+        ).thenAnswer((_) async => MockUserCredential());
 
         await authRepository.logInWithGoogle();
 
@@ -59,24 +74,34 @@ void main() {
         verify(() => firebaseAuth.signInWithCredential(any())).called(1);
       });
 
-      test('returns early if google sign in is cancelled', () async {
-        when(() => googleSignIn.signIn()).thenAnswer((_) async => null);
+      test('throws LogInWithGoogleFailure if sign in fails', () async {
+        when(() => googleSignIn.signIn()).thenThrow(Exception());
 
-        await authRepository.logInWithGoogle();
-
-        verify(() => googleSignIn.signIn()).called(1);
-        verifyNever(() => firebaseAuth.signInWithCredential(any()));
+        expect(
+          () => authRepository.logInWithGoogle(),
+          throwsA(isA<LogInWithGoogleFailure>()),
+        );
       });
     });
 
     group('logInWithGithub', () {
       test('signs in with github using popup', () async {
-        when(() => firebaseAuth.signInWithPopup(any()))
-            .thenAnswer((_) async => MockUserCredential());
+        when(
+          () => firebaseAuth.signInWithPopup(any()),
+        ).thenAnswer((_) async => MockUserCredential());
 
         await authRepository.logInWithGithub();
 
         verify(() => firebaseAuth.signInWithPopup(any())).called(1);
+      });
+
+      test('throws LogInWithGithubFailure if sign in fails', () async {
+        when(() => firebaseAuth.signInWithPopup(any())).thenThrow(Exception());
+
+        expect(
+          () => authRepository.logInWithGithub(),
+          throwsA(isA<LogInWithGithubFailure>()),
+        );
       });
     });
 

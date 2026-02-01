@@ -5,6 +5,7 @@ import 'package:flutterconf/auth/auth.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
 class MockUser extends Mock implements User {}
 
 void main() {
@@ -57,13 +58,32 @@ void main() {
       blocTest<AuthCubit, AuthState>(
         'emits [AuthLoading, AuthError] when logInWithGoogle fails',
         build: () {
-          when(() => authRepository.logInWithGoogle()).thenThrow(Exception('error'));
+          when(
+            () => authRepository.logInWithGoogle(),
+          ).thenThrow(LogInWithGoogleFailure());
           return AuthCubit(authRepository: authRepository);
         },
         act: (cubit) => cubit.logInWithGoogle(),
         expect: () => [
           const AuthLoading(),
-          const AuthError('Exception: error'),
+          const AuthError('Log in with Google failed.'),
+        ],
+      );
+
+      blocTest<AuthCubit, AuthState>(
+        'emits [AuthLoading, AuthConflict] when account conflict occurs',
+        build: () {
+          when(() => authRepository.logInWithGoogle()).thenThrow(
+            const AccountConflictFailure('test@example.com'),
+          );
+          return AuthCubit(authRepository: authRepository);
+        },
+        act: (cubit) => cubit.logInWithGoogle(),
+        expect: () => [
+          const AuthLoading(),
+          const AuthConflict(
+            email: 'test@example.com',
+          ),
         ],
       );
     });
@@ -82,13 +102,32 @@ void main() {
       blocTest<AuthCubit, AuthState>(
         'emits [AuthLoading, AuthError] when logInWithGithub fails',
         build: () {
-          when(() => authRepository.logInWithGithub()).thenThrow(Exception('error'));
+          when(
+            () => authRepository.logInWithGithub(),
+          ).thenThrow(LogInWithGithubFailure());
           return AuthCubit(authRepository: authRepository);
         },
         act: (cubit) => cubit.logInWithGithub(),
         expect: () => [
           const AuthLoading(),
-          const AuthError('Exception: error'),
+          const AuthError('Log in with GitHub failed.'),
+        ],
+      );
+
+      blocTest<AuthCubit, AuthState>(
+        'emits [AuthLoading, AuthConflict] when account conflict occurs',
+        build: () {
+          when(() => authRepository.logInWithGithub()).thenThrow(
+            const AccountConflictFailure('test@example.com'),
+          );
+          return AuthCubit(authRepository: authRepository);
+        },
+        act: (cubit) => cubit.logInWithGithub(),
+        expect: () => [
+          const AuthLoading(),
+          const AuthConflict(
+            email: 'test@example.com',
+          ),
         ],
       );
     });
