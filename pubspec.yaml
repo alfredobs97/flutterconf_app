@@ -40,9 +40,5 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
-    - assets/activities/
-    - assets/speakers/
-    - assets/sponsors/
-    - assets/organizers/
     - shorebird.yaml
   uses-material-design: true
