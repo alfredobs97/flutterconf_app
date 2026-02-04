@@ -5,7 +5,11 @@
             "name": "Flutter",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "debug"
+            "flutterMode": "debug",
+            "args": [
+                "--web-port",
+                "8080"
+            ]
         },
         {
             "name": "Flutter (profile mode)",
@@ -24,7 +28,10 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "args": ["-d", "web-server"]
+            "args": [
+                "-d",
+                "web-server"
+            ]
         }
     ]
 }
