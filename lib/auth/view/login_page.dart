@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.all(32),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

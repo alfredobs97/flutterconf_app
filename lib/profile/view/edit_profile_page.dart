@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/profile/cubit/profile_cubit.dart';
 import 'package:flutterconf/profile/models/user_profile.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -244,14 +243,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 _buildSectionHeader('Availability'),
                 Text(
-                  'Do you want to show that you are open to work or do you want to hire someone?',
+                  'Do you want to show that you are open to work or do you '
+                  'want to hire someone?',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<WorkStatus>(
-                  value: _workStatus,
+                  initialValue: _workStatus,
                   decoration: _getInputDecoration('Work Status', Icons.info),
                   items: const [
                     DropdownMenuItem(
