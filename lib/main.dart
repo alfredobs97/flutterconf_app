@@ -5,9 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/auth/auth.dart';
+import 'package:flutterconf/config/config.dart';
 import 'package:flutterconf/favorites/favorites.dart';
 import 'package:flutterconf/firebase_options.dart';
 import 'package:flutterconf/launchpad/launchpad.dart';
+import 'package:flutterconf/profile/cubit/profile_cubit.dart';
+import 'package:flutterconf/profile/data/profile_repository.dart';
 import 'package:flutterconf/theme/theme.dart';
 import 'package:flutterconf/updater/updater.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -46,6 +49,7 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (_) => ShorebirdUpdater()),
+        RepositoryProvider(create: (_) => ProfileRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -60,6 +64,12 @@ class App extends StatelessWidget {
             create: (context) => UpdaterCubit(
               updater: context.read<ShorebirdUpdater>(),
             )..init(),
+          ),
+          BlocProvider(
+            create: (context) => ProfileCubit(
+              profileRepository: context.read<ProfileRepository>(),
+              authRepository: context.read<AuthRepository>(),
+            ),
           ),
         ],
         child: const AppView(),
@@ -108,6 +118,9 @@ class AppView extends StatelessWidget {
               );
             default:
               break;
+          }
+          if (state is Authenticated && FeatureFlags.isProfileEnabled) {
+            context.read<ProfileCubit>().loadProfile();
           }
         },
         child: BlocBuilder<AuthCubit, AuthState>(
