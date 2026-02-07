@@ -18,6 +18,13 @@ class QRConnectPage extends StatefulWidget {
 
 class _QRConnectPageState extends State<QRConnectPage> {
   int _currentIndex = 0;
+  final MobileScannerController _scannerController = MobileScannerController();
+
+  @override
+  void dispose() {
+    _scannerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +67,13 @@ class _QRConnectPageState extends State<QRConnectPage> {
                   content: Text('Scanned ${scannedProfile.displayName}!'),
                 ),
               );
-              context.push('/profile/${scannedProfile.id}');
+              context.push('/profile/${scannedProfile.id}').then((_) {
+                if (mounted) {
+                  _scannerController.start();
+                }
+              });
             case QRScanningError(message: final message):
+              _scannerController.start();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(message)),
               );
@@ -77,6 +89,7 @@ class _QRConnectPageState extends State<QRConnectPage> {
                   ? _MyQRView()
                   : _ScanView(
                       key: const ValueKey('scan-view'),
+                      controller: _scannerController,
                       onDetect: _handleDetect,
                     ),
             ),
@@ -132,6 +145,7 @@ class _QRConnectPageState extends State<QRConnectPage> {
     for (final barcode in barcodes) {
       final rawValue = barcode.rawValue;
       if (rawValue != null && rawValue.contains('/profile/')) {
+        _scannerController.stop();
         context.read<QRScanningBloc>().add(QRCodeScanned(rawValue));
         break;
       }
@@ -339,16 +353,21 @@ class _MyQRView extends StatelessWidget {
 class _ScanView extends StatelessWidget {
   const _ScanView({
     required this.onDetect,
+    required this.controller,
     super.key,
   });
 
   final void Function(BarcodeCapture) onDetect;
+  final MobileScannerController controller;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        MobileScanner(onDetect: onDetect),
+        MobileScanner(
+          controller: controller,
+          onDetect: onDetect,
+        ),
         const QRScannerOverlay(),
       ],
     );

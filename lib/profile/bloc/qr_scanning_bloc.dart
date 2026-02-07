@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutterconf/profile/data/profile_repository.dart';
 import 'package:flutterconf/profile/models/scanned_profile.dart';
@@ -11,7 +12,10 @@ class QRScanningBloc extends Bloc<QRScanningEvent, QRScanningState> {
     required ProfileRepository profileRepository,
   }) : _profileRepository = profileRepository,
        super(const QRScanningIdle()) {
-    on<QRCodeScanned>(_onQRCodeScanned);
+    on<QRCodeScanned>(
+      _onQRCodeScanned,
+      transformer: droppable<QRCodeScanned>(),
+    );
   }
 
   final ProfileRepository _profileRepository;

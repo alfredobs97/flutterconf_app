@@ -113,5 +113,38 @@ void main() {
         const QRScanningIdle(),
       ],
     );
+
+    blocTest<QRScanningBloc, QRScanningState>(
+      'drops second QRCodeScanned while first one is processing',
+      setUp: () {
+        when(() => profileRepository.getProfile(any())).thenAnswer(
+          (_) async {
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+            return UserProfile(
+              id: 'user123',
+              displayName: 'John Doe',
+              email: 'john@example.com',
+            );
+          },
+        );
+      },
+      build: () => QRScanningBloc(
+        profileRepository: profileRepository,
+      ),
+      act: (bloc) {
+        bloc.add(const QRCodeScanned('https://example.com/profile/user123'));
+        bloc.add(const QRCodeScanned('https://example.com/profile/user456'));
+      },
+      wait: const Duration(milliseconds: 200),
+      expect: () => [
+        const QRScanningProcessing(),
+        isA<QRScanningSuccess>(),
+        const QRScanningIdle(),
+      ],
+      verify: (_) {
+        verify(() => profileRepository.getProfile('user123')).called(1);
+        verifyNever(() => profileRepository.getProfile('user456'));
+      },
+    );
   });
 }
