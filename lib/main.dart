@@ -8,6 +8,7 @@ import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/config/config.dart';
 import 'package:flutterconf/favorites/favorites.dart';
 import 'package:flutterconf/firebase_options.dart';
+import 'package:flutterconf/profile/bloc/qr_scanning_bloc.dart';
 import 'package:flutterconf/profile/cubit/profile_cubit.dart';
 import 'package:flutterconf/profile/cubit/scanned_profiles_cubit.dart';
 import 'package:flutterconf/profile/data/profile_repository.dart';
@@ -80,7 +81,14 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => ScannedProfilesCubit(
               repository: context.read<ScannedProfilesRepository>(),
+              profileRepository: context.read<ProfileRepository>(),
+              authRepository: context.read<AuthRepository>(),
             )..loadProfiles(),
+          ),
+          BlocProvider(
+            create: (context) => QRScanningBloc(
+              profileRepository: context.read<ProfileRepository>(),
+            ),
           ),
         ],
         child: const AppView(),
