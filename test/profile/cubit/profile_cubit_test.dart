@@ -55,6 +55,7 @@ void main() {
           const ProfileLoading(),
           const ProfileLoaded(
             UserProfile(id: '1', email: 'test@example.com'),
+            'https://flutterconf.dev/profile/1',
           ),
         ],
       );
