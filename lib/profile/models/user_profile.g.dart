@@ -44,5 +44,6 @@ Map<String, dynamic> _$UserProfileToJson(UserProfile instance) =>
 const _$WorkStatusEnumMap = {
   WorkStatus.hiring: 'hiring',
   WorkStatus.openToWork: 'open_to_work',
+  WorkStatus.busy: 'busy',
   WorkStatus.none: 'none',
 };
