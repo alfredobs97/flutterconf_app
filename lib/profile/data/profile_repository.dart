@@ -21,4 +21,10 @@ class ProfileRepository {
     }
     return null;
   }
+
+  Future<void> incrementScannedCount(String userId) async {
+    await _firestore.collection('users').doc(userId).update({
+      'scannedCount': FieldValue.increment(1),
+    });
+  }
 }

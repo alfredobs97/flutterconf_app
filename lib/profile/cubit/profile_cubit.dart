@@ -17,13 +17,22 @@ class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepository _profileRepository;
   final AuthRepository _authRepository;
 
-  Future<void> loadProfile() async {
+  static const String _baseUrl = 'https://flutterconf.dev';
+
+  Future<void> loadProfile({String? userId}) async {
     emit(const ProfileLoading());
     try {
-      final profile = await _profileRepository.getProfile(
-        _authRepository.currentUser!.uid,
+      final id = userId ?? _authRepository.currentUser?.uid;
+      if (id == null) {
+        emit(const ProfileError());
+        return;
+      }
+      final profile = await _profileRepository.getProfile(id);
+      emit(
+        profile != null
+            ? ProfileLoaded(profile, _buildQrData(profile))
+            : const ProfileNotFound(),
       );
-      emit(profile != null ? ProfileLoaded(profile) : const ProfileNotFound());
     } on Exception catch (_) {
       emit(const ProfileError());
     }
@@ -36,9 +45,15 @@ class ProfileCubit extends Cubit<ProfileState> {
         photoUrl: _authRepository.currentUser?.photoURL,
       );
       await _profileRepository.updateProfile(updatedProfile);
-      emit(ProfileLoaded(updatedProfile));
+      emit(
+        ProfileLoaded(updatedProfile, _buildQrData(updatedProfile)),
+      );
     } on Exception catch (_) {
       emit(const ProfileError());
     }
+  }
+
+  String _buildQrData(UserProfile profile) {
+    return '$_baseUrl/profile/${profile.id}';
   }
 }

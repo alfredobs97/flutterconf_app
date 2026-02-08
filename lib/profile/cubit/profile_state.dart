@@ -16,9 +16,10 @@ class ProfileLoading extends ProfileState {
 }
 
 class ProfileLoaded extends ProfileState {
-  const ProfileLoaded(this.profile);
+  const ProfileLoaded(this.profile, this.qrData);
 
   final UserProfile profile;
+  final String qrData;
 
   @override
   List<Object?> get props => [profile];
