@@ -14,7 +14,8 @@ import 'package:flutterconf/profile/cubit/scanned_profiles_cubit.dart';
 import 'package:flutterconf/profile/data/profile_repository.dart';
 import 'package:flutterconf/profile/data/scanned_profiles_repository.dart';
 import 'package:flutterconf/config/router.dart';
-import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/theme/cubit/theme_cubit.dart';
+import 'package:flutterconf/theme/app_theme.dart';
 import 'package:flutterconf/updater/updater.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -122,8 +123,8 @@ class _AppViewState extends State<AppView> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
       routerConfig: _router,
       builder: (context, child) {
         return BlocListener<AuthCubit, AuthState>(
