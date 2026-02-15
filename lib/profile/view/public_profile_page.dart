@@ -83,7 +83,6 @@ class PublicProfilePage extends StatelessWidget {
               if (state is ProfileLoaded) {
                 return ProfileView(
                   profile: state.profile,
-                  isMe: false,
                 );
               }
 

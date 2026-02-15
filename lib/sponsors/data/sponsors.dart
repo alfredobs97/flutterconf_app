@@ -14,7 +14,7 @@ const goldSponsors = <Sponsor>[
   ),
 ];
 
-const togetherWith = <Sponsor>[
+const venuePartner = <Sponsor>[
   Sponsor(
     logo: 'assets/sponsors/gsec.png',
     url: 'https://safety.google/intl/es_ALL/safety/engineering-center/malaga/',

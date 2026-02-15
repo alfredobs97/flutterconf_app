@@ -5,6 +5,7 @@ import 'package:flutterconf/profile/bloc/qr_scanning_bloc.dart';
 import 'package:flutterconf/profile/cubit/profile_cubit.dart';
 import 'package:flutterconf/profile/cubit/scanned_profiles_cubit.dart';
 import 'package:flutterconf/profile/widgets/qr_scanner_overlay.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -31,30 +32,8 @@ class _QRConnectPageState extends State<QRConnectPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: AppBar(
-        title: const Text(
-          'QR Connect',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            shadows: [
-              Shadow(
-                color: Colors.black,
-                blurRadius: 10,
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              color: Colors.blue.withValues(alpha: 0.1),
-            ),
-          ),
-        ),
+      appBar: FCAppBar(
+        title: const Text('Connect'),
       ),
       body: BlocListener<QRScanningBloc, QRScanningState>(
         listener: (context, state) {
@@ -106,10 +85,14 @@ class _QRConnectPageState extends State<QRConnectPage> {
                         height: 60,
                         width: 250,
                         decoration: BoxDecoration(
-                          color: Colors.blue.withValues(alpha: 0.2),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: Colors.blue.withValues(alpha: 0.3),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Row(
@@ -174,7 +157,9 @@ class _NavButton extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         child: Container(
           decoration: BoxDecoration(
-            color: isSelected ? Colors.blue.withValues(alpha: 0.3) : null,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.4)
+                : null,
             borderRadius: BorderRadius.circular(30),
           ),
           child: Column(
@@ -182,14 +167,14 @@ class _NavButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isSelected ? Colors.white : Colors.white70,
+                color: Theme.of(context).colorScheme.surface,
                 size: 20,
               ),
               const SizedBox(height: 2),
               Text(
                 label,
                 style: TextStyle(
-                  color: isSelected ? Colors.white : Colors.white70,
+                  color: Theme.of(context).colorScheme.surface,
                   fontSize: 10,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
@@ -208,140 +193,117 @@ class _MyQRView extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state is ProfileLoaded) {
-          return Container(
-            key: const ValueKey('my-qr-view'),
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
-                  Theme.of(context).colorScheme.surface,
-                  Theme.of(
-                    context,
-                  ).colorScheme.secondary.withValues(alpha: 0.05),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(flex: 3),
-                Hero(
-                  tag: 'qr-card',
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.secondary,
-                        ],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
-                          blurRadius: 30,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: Card(
-                      elevation: 0,
-                      margin: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(26),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            QrImageView(
-                              data: state.qrData,
-                              size: 240,
-                              backgroundColor: Colors.white,
-                              eyeStyle: QrEyeStyle(
-                                eyeShape: QrEyeShape.circle,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              dataModuleStyle: QrDataModuleStyle(
-                                dataModuleShape: QrDataModuleShape.circle,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Text(
-                              state.profile.displayName ?? 'Attendee',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                  ),
-                            ),
-                            const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.primaryContainer,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                'FlutterConf 2026',
-                                style: Theme.of(context).textTheme.labelLarge
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onPrimaryContainer,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const Spacer(flex: 2),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 48),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(flex: 3),
+              Hero(
+                tag: 'qr-card',
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Theme.of(context).colorScheme.primary,
+                    boxShadow: [
+                      BoxShadow(
                         color: Theme.of(
                           context,
-                        ).colorScheme.primary.withValues(alpha: 0.6),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Show this code to other attendees to share your professional profile instantly.',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          height: 1.5,
-                        ),
+                        ).colorScheme.primary.withValues(alpha: 0.3),
+                        blurRadius: 30,
+                        offset: const Offset(0, 10),
                       ),
                     ],
                   ),
+                  child: Card(
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          QrImageView(
+                            data: state.qrData,
+                            size: 240,
+
+                            eyeStyle: QrEyeStyle(
+                              eyeShape: QrEyeShape.circle,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            dataModuleStyle: QrDataModuleStyle(
+                              dataModuleShape: QrDataModuleShape.circle,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            state.profile.displayName ?? 'Attendee',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
+                          ),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'FlutterConf 2026',
+                              style: Theme.of(context).textTheme.labelLarge
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                const Spacer(flex: 3),
-              ],
-            ),
+              ),
+              const Spacer(flex: 2),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.6),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Show this code to other attendees to share your professional profile instantly.',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(flex: 3),
+            ],
           );
         }
         return const Center(child: CircularProgressIndicator());

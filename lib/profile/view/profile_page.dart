@@ -4,6 +4,7 @@ import 'package:flutterconf/profile/cubit/profile_cubit.dart';
 import 'package:flutterconf/profile/view/edit_profile_page.dart';
 import 'package:flutterconf/profile/view/profile_skeleton.dart';
 import 'package:flutterconf/profile/view/profile_view.dart';
+import 'package:flutterconf/theme/widgets/widgets.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -11,40 +12,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        actions: [
-          BlocBuilder<ProfileCubit, ProfileState>(
-            builder: (context, state) {
-              if (state is ProfileLoaded) {
-                return IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const EditProfilePage(),
-                      ),
-                    );
-                  },
-                );
-              }
-              if (state is ProfileNotFound) {
-                return IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const EditProfilePage(),
-                      ),
-                    );
-                  },
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        ],
-      ),
+      appBar: FCAppBar(),
       body: RefreshIndicator(
         onRefresh: () => context.read<ProfileCubit>().loadProfile(),
         child: BlocBuilder<ProfileCubit, ProfileState>(

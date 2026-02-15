@@ -18,7 +18,6 @@ class AppTheme {
         primary: _lightPrimary,
         secondary: _lightAccent,
         surface: _lightBackground,
-        brightness: Brightness.light,
       ),
       textTheme: GoogleFonts.interTextTheme(),
       appBarTheme: const AppBarTheme(

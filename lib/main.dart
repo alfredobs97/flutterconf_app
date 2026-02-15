@@ -4,8 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/config/config.dart';
+import 'package:flutterconf/config/router.dart';
 import 'package:flutterconf/favorites/favorites.dart';
 import 'package:flutterconf/firebase_options.dart';
 import 'package:flutterconf/profile/bloc/qr_scanning_bloc.dart';
@@ -13,15 +15,13 @@ import 'package:flutterconf/profile/cubit/profile_cubit.dart';
 import 'package:flutterconf/profile/cubit/scanned_profiles_cubit.dart';
 import 'package:flutterconf/profile/data/profile_repository.dart';
 import 'package:flutterconf/profile/data/scanned_profiles_repository.dart';
-import 'package:flutterconf/config/router.dart';
-import 'package:flutterconf/theme/cubit/theme_cubit.dart';
 import 'package:flutterconf/theme/app_theme.dart';
+import 'package:flutterconf/theme/cubit/theme_cubit.dart';
 import 'package:flutterconf/updater/updater.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

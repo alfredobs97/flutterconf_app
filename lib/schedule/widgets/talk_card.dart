@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterconf/extensions/extensions.dart';
 import 'package:flutterconf/favorites/favorites.dart';
-import 'package:flutterconf/location/location.dart';
 import 'package:flutterconf/schedule/schedule.dart';
 import 'package:flutterconf/talk_details/talk_details.dart';
 

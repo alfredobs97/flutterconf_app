@@ -107,24 +107,29 @@ class _QRScannerOverlayState extends State<QRScannerOverlay>
                       vertical: 12,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.blue.withValues(alpha: 0.2),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
-                        color: Colors.blue.withValues(alpha: 0.3),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.3),
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.blue.withValues(alpha: 0.2),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.2),
                           blurRadius: 15,
                           spreadRadius: 2,
                         ),
                       ],
                     ),
-                    child: const Text(
+                    child: Text(
                       'Network & Connect',
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Colors.white,
-                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1.2,
                       ),
@@ -139,15 +144,14 @@ class _QRScannerOverlayState extends State<QRScannerOverlay>
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.3),
+                  color: Colors.black.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   'Scan profiles to save contacts',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.white.withValues(alpha: 0.9),
-                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
