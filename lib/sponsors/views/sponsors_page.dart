@@ -59,13 +59,13 @@ class SponsorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Card(
-        elevation: 0,
-        clipBehavior: Clip.hardEdge,
-        child: InkWell(
-          onTap: () => launchUrlString(sponsor.url),
+    return Card(
+      elevation: 0,
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: () => launchUrlString(sponsor.url),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
           child: Center(
             child: FractionallySizedBox(
               widthFactor: 0.5,

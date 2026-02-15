@@ -48,5 +48,6 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/sponsors/
     - shorebird.yaml
   uses-material-design: true
