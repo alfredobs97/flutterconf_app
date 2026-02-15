@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterconf/sponsors/sponsors.dart';
-import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SponsorsPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class SponsorsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: FFAppBar(), body: const SponsorsListView());
+    return Scaffold(appBar: FCAppBar(), body: const SponsorsListView());
   }
 }
 
@@ -62,7 +62,6 @@ class SponsorItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
-        color: lightTheme.colorScheme.surface,
         elevation: 0,
         clipBehavior: Clip.hardEdge,
         child: InkWell(

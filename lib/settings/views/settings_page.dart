@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/organizers/organizers.dart';
 import 'package:flutterconf/settings/settings.dart';
-import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
+import 'package:flutterconf/theme/widgets/theme_toggle.dart';
 import 'package:flutterconf/updater/updater.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
@@ -47,7 +48,7 @@ class SettingsView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Settings')),
+        appBar: FCAppBar(title: const Text('Settings')),
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           children: [

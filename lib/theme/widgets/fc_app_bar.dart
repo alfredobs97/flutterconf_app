@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutterconf/settings/settings.dart';
 
-class FFAppBar extends AppBar {
-  FFAppBar({Widget? title, List<Widget>? actions, super.bottom, super.key})
+class FCAppBar extends AppBar {
+  FCAppBar({Widget? title, List<Widget>? actions, super.bottom, super.key})
     : super(
         title:
             title ??

@@ -4,6 +4,7 @@ import 'package:flutterconf/location/location.dart';
 import 'package:flutterconf/schedule/schedule.dart';
 import 'package:flutterconf/speaker_details/speaker_details.dart';
 import 'package:flutterconf/speakers/speakers.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 import 'package:flutterconf/twitter/twitter.dart';
 import 'package:intl/intl.dart';
 
@@ -30,10 +31,10 @@ class TalkDetailsView extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: FCAppBar(
         title: Padding(
           padding: const EdgeInsets.only(bottom: 8),
-          child: Image.asset('assets/logo.png', height: kToolbarHeight + 8),
+          child: Image.asset('assets/logo.png', height: kToolbarHeight),
         ),
         actions: [FavoriteButton(event: talk)],
       ),

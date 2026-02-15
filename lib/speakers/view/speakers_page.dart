@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterconf/speakers/speakers.dart';
-import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 
 class SpeakersPage extends StatelessWidget {
   const SpeakersPage({super.key});
@@ -8,7 +8,7 @@ class SpeakersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FFAppBar(),
+      appBar: FCAppBar(),
       body: const SpeakersView(),
     );
   }
