@@ -16,7 +16,7 @@ class LocationDetails extends StatelessWidget {
         Icon(
           Icons.location_on_outlined,
           size: 18,
-          color: theme.colorScheme.secondary,
+          color: theme.colorScheme.primary,
         ),
         InkWell(
           onTap: () => launchUrlString(
@@ -25,7 +25,7 @@ class LocationDetails extends StatelessWidget {
           child: Text(
             location.name,
             style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.secondary,
+              color: theme.colorScheme.primary,
             ),
           ),
         ),

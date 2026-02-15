@@ -28,7 +28,7 @@ class ActivityCard extends StatelessWidget {
                       Icon(
                         Icons.calendar_today,
                         size: 18,
-                        color: theme.colorScheme.secondary,
+                        color: theme.colorScheme.primary,
                       ),
                       const SizedBox(width: 4),
                       Text(
@@ -37,7 +37,7 @@ class ActivityCard extends StatelessWidget {
                           activity.duration,
                         ),
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.secondary,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -75,13 +75,7 @@ class ActivityCard extends StatelessWidget {
                 ),
               ],
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  LocationDetails(location: activity.location),
-                  const Text('Activity'),
-                ],
-              ),
+              const Text('Activity'),
             ],
           ),
         ),

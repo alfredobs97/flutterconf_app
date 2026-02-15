@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/profile/models/user_profile.dart';
 import 'package:flutterconf/profile/view/scanned_history_page.dart';
-import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({
@@ -36,22 +37,9 @@ class ProfileView extends StatelessWidget {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
+              const SizedBox(
                 height: 100,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(32),
-                  ),
-                ),
               ),
               Positioned(
                 top: 50,
@@ -353,7 +341,10 @@ class ProfileView extends StatelessWidget {
         color: Theme.of(context).colorScheme.outline,
       ),
       onTap: () {
-        // TODO: Handle social link tap
+        final url = Uri.tryParse(value);
+        if (url != null) {
+          launchUrl(url);
+        }
       },
     );
   }

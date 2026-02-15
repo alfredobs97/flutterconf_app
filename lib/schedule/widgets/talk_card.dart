@@ -32,13 +32,13 @@ class TalkCard extends StatelessWidget {
                       Icon(
                         Icons.calendar_today,
                         size: 18,
-                        color: theme.colorScheme.secondary,
+                        color: theme.colorScheme.primary,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         talk.startTime.prettyPrint(context, talk.duration),
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.secondary,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -91,13 +91,7 @@ class TalkCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  LocationDetails(location: talk.location),
-                  const Text('Talk'),
-                ],
-              ),
+              const Text('Talk'),
             ],
           ),
         ),
