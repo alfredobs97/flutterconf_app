@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/organizers/organizers.dart';
 import 'package:flutterconf/settings/settings.dart';
-import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
+import 'package:flutterconf/theme/widgets/theme_toggle.dart';
 import 'package:flutterconf/updater/updater.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
@@ -47,23 +48,12 @@ class SettingsView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Settings')),
+        appBar: FCAppBar(title: const Text('Settings')),
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           children: [
             Text('Preferences', style: headingStyle),
             const ThemeToggle(),
-            const SizedBox(height: 16),
-            Text('Extras', style: headingStyle),
-            ListTile(
-              leading: const Icon(Icons.map),
-              title: const Text('Activity Map'),
-              subtitle: const Text('View the locations of all activities'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => launchUrlString(
-                'https://www.google.com/maps/d/u/0/viewer?mid=102KWzlh5enCfJXbgTu8wN8FSfeOzsMw&femb=1&ll=59.32440113540593%2C18.059913600000016&z=13',
-              ),
-            ),
             const SizedBox(height: 16),
             Text('Socials', style: headingStyle),
             ListTile(
@@ -87,19 +77,13 @@ class SettingsView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text('About', style: headingStyle),
-            ListTile(
-              title: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Version'), AppVersion()],
-              ),
-              onTap: () => context.read<UpdaterCubit>().checkForUpdates(),
-            ),
+
             ListTile(
               title: const Text('Website'),
               subtitle: const Text('View the official website'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrlString(
-                'https://flutterconfesp.web.app/',
+                'https://flutterconf.es/',
               ),
             ),
             ListTile(
@@ -134,31 +118,12 @@ class SettingsView extends StatelessWidget {
               subtitle: const Text('View the privacy policy'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrlString(
-                'https://github.com/alfredobs97/flutterconf/blob/main/privacy.md',
+                'https://github.com/alfredobs97/flutterconf_app/blob/main/privacy.md',
               ),
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-class AppVersion extends StatelessWidget {
-  const AppVersion({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final version = context.select((SettingsCubit cubit) {
-      final state = cubit.state;
-      final packageVersion =
-          '''${state.version.major}.${state.version.minor}.${state.version.patch}''';
-      final buildNumber = '${state.version.build.singleOrNull ?? 0}';
-      final patchNumber = state.patchNumber != null
-          ? ' #${state.patchNumber}'
-          : '';
-      return '$packageVersion ($buildNumber)$patchNumber';
-    });
-    return Text(version);
   }
 }

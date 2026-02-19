@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterconf/organizers/organizers.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 
 class OrganizersPage extends StatelessWidget {
   const OrganizersPage({super.key});
@@ -11,7 +12,7 @@ class OrganizersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Organizers')),
+      appBar: FCAppBar(title: const Text('Organizers')),
       body: const OrganizersView(),
     );
   }

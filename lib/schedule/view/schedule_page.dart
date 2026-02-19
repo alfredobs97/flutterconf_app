@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/schedule/schedule.dart';
-import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 
 class SchedulePage extends StatelessWidget {
   const SchedulePage({super.key});
@@ -23,19 +23,21 @@ class ScheduleView extends StatelessWidget {
     final state = context.watch<ScheduleCubit>().state;
     return DefaultTabController(
       initialIndex: state.index,
-      length: ScheduleState.values.length,
+      length: 2,
       child: Scaffold(
-        appBar: FFAppBar(
+        appBar: FCAppBar(
           bottom: TabBar(
             onTap: (index) => context.read<ScheduleCubit>().toggleTab(index),
             tabs: const <Widget>[
               Tab(child: Text('Day 1')),
+              Tab(child: Text('Day 2')),
             ],
           ),
         ),
         body: TabBarView(
           children: [
             ScheduleListView(events: day1),
+            ScheduleListView(events: day2),
           ],
         ),
       ),

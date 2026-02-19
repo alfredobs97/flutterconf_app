@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutterconf/settings/settings.dart';
 
-class FFAppBar extends AppBar {
-  FFAppBar({super.bottom, super.key})
+class FCAppBar extends AppBar {
+  FCAppBar({Widget? title, List<Widget>? actions, super.bottom, super.key})
     : super(
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Image.asset('assets/logo.png', height: kToolbarHeight + 8),
-        ),
-        actions: [const _SettingsButton()],
+        title:
+            title ??
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Image.asset('assets/logo.png', height: kToolbarHeight),
+            ),
+        actions: actions ?? [const _SettingsButton()],
       );
 }
 

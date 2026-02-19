@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterconf/extensions/extensions.dart';
 import 'package:flutterconf/favorites/favorites.dart';
-import 'package:flutterconf/location/location.dart';
 import 'package:flutterconf/schedule/schedule.dart';
 import 'package:flutterconf/workshop_details/workshop_details.dart';
 
@@ -32,7 +31,7 @@ class WorkshopCard extends StatelessWidget {
                       Icon(
                         Icons.calendar_today,
                         size: 18,
-                        color: theme.colorScheme.secondary,
+                        color: theme.colorScheme.primary,
                       ),
                       const SizedBox(width: 4),
                       Text(
@@ -41,7 +40,7 @@ class WorkshopCard extends StatelessWidget {
                           workshop.duration,
                         ),
                         style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.secondary,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                     ],
@@ -93,13 +92,7 @@ class WorkshopCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  LocationDetails(location: workshop.location),
-                  const Text('Workshop'),
-                ],
-              ),
+              const Text('Workshop'),
             ],
           ),
         ),

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/profile/models/user_profile.dart';
+import 'package:flutterconf/profile/view/edit_profile_page.dart';
 import 'package:flutterconf/profile/view/scanned_history_page.dart';
-import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({
@@ -31,27 +33,13 @@ class ProfileView extends StatelessWidget {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
+              const SizedBox(
                 height: 100,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(32),
-                  ),
-                ),
               ),
               Positioned(
                 top: 50,
@@ -235,27 +223,48 @@ class ProfileView extends StatelessWidget {
           if (isMe)
             Column(
               children: [
-                SizedBox(
-                  width: 200,
-                  height: 50,
-                  child: ElevatedButton.icon(
-                    onPressed: () => context.push('/scan-qr'),
-                    icon: const Icon(Icons.qr_code, size: 24),
-                    label: const Text(
-                      'Your QR',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => context.push('/scan-qr'),
+                          icon: const Icon(Icons.qr_code, size: 20),
+                          label: const Text('Your QR'),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const EditProfilePage(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.edit, size: 20),
+                          label: const Text('Edit Profile'),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
+
                 TextButton.icon(
                   onPressed: () {
                     showModalBottomSheet<void>(
@@ -353,7 +362,10 @@ class ProfileView extends StatelessWidget {
         color: Theme.of(context).colorScheme.outline,
       ),
       onTap: () {
-        // TODO: Handle social link tap
+        final url = Uri.tryParse(value);
+        if (url != null) {
+          launchUrl(url);
+        }
       },
     );
   }

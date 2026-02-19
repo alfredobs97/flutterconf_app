@@ -17,7 +17,7 @@ class FavoritesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FFAppBar(),
+      appBar: FCAppBar(),
       body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
           if (state.events.isEmpty) return const EmptyFavorites();

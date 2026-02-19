@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterconf/theme/theme.dart';
+import 'package:flutterconf/theme/cubit/theme_cubit.dart';
 
 class ThemeToggle extends StatelessWidget {
   const ThemeToggle({super.key});
