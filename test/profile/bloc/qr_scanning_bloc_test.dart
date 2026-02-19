@@ -27,7 +27,7 @@ void main() {
       'emits [Processing, Success, Idle] when QRCodeScanned is successful',
       setUp: () {
         when(() => profileRepository.getProfile(any())).thenAnswer(
-          (_) async => UserProfile(
+          (_) async => const UserProfile(
             id: 'user123',
             displayName: 'John Doe',
             email: 'john@example.com',
@@ -120,7 +120,7 @@ void main() {
         when(() => profileRepository.getProfile(any())).thenAnswer(
           (_) async {
             await Future<void>.delayed(const Duration(milliseconds: 100));
-            return UserProfile(
+            return const UserProfile(
               id: 'user123',
               displayName: 'John Doe',
               email: 'john@example.com',
