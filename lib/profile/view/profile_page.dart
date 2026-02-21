@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/auth/cubit/auth_cubit.dart';
 import 'package:flutterconf/profile/cubit/profile_cubit.dart';
 import 'package:flutterconf/profile/view/edit_profile_page.dart';
 import 'package:flutterconf/profile/view/profile_skeleton.dart';
@@ -19,6 +20,48 @@ class ProfilePage extends StatelessWidget {
           builder: (context, state) {
             if (state is ProfileLoading || state is ProfileInitial) {
               return const ProfileSkeleton();
+            }
+
+            if (state is ProfileGuest) {
+              return Center(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.account_circle_outlined,
+                        size: 80,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Guest Mode',
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'You are in guest mode. You can interact with the app '
+                        'without an account, but you can create one to enjoy '
+                        'all the features!',
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      ElevatedButton.icon(
+                        onPressed: () => context.read<AuthCubit>().logOut(),
+                        icon: const Icon(Icons.login),
+                        label: const Text('Log In / Sign Up'),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             }
 
             if (state is ProfileError) {
