@@ -20,7 +20,8 @@ class LocationDetails extends StatelessWidget {
         ),
         InkWell(
           onTap: () => launchUrlString(
-            'https://maps.google.com/?q=${location.coordinates.$1},${location.coordinates.$2}',
+            location.mapUrl ??
+                'https://maps.google.com/?q=${location.coordinates.$1},${location.coordinates.$2}',
           ),
           child: Text(
             location.name,
