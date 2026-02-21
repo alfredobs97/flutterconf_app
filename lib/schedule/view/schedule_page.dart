@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/location/location.dart';
 import 'package:flutterconf/schedule/schedule.dart';
 import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 
@@ -40,8 +41,14 @@ class ScheduleView extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  ScheduleListView(events: state.filteredDay1),
-                  ScheduleListView(events: state.filteredDay2),
+                  ScheduleListView(
+                    events: state.filteredDay1,
+                    venue: gsecMalaga,
+                  ),
+                  ScheduleListView(
+                    events: state.filteredDay2,
+                    venue: innovationCampus,
+                  ),
                 ],
               ),
             ),
@@ -75,20 +82,28 @@ class _SearchBar extends StatelessWidget {
 }
 
 class ScheduleListView extends StatelessWidget {
-  const ScheduleListView({required this.events, super.key});
+  const ScheduleListView({required this.events, this.venue, super.key});
 
   final List<Event> events;
+  final Location? venue;
 
   @override
   Widget build(BuildContext context) {
-    if (events.isEmpty) {
-      return const Center(child: Text('No talks found.'));
-    }
-    return ListView.separated(
-      separatorBuilder: (_, _) => const SizedBox(height: 16),
-      padding: const EdgeInsets.all(12),
-      itemCount: events.length,
-      itemBuilder: (context, index) => EventCard(event: events[index]),
+    return Column(
+      children: [
+        if (venue != null) VenueBanner(location: venue!),
+        Expanded(
+          child: events.isEmpty
+              ? const Center(child: Text('No talks found.'))
+              : ListView.separated(
+                  separatorBuilder: (_, _) => const SizedBox(height: 16),
+                  padding: const EdgeInsets.all(12),
+                  itemCount: events.length,
+                  itemBuilder: (context, index) =>
+                      EventCard(event: events[index]),
+                ),
+        ),
+      ],
     );
   }
 }

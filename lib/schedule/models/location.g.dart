@@ -17,6 +17,7 @@ Location _$LocationFromJson(Map<String, dynamic> json) => Location(
       ($jsonValue[r'$2'] as num).toDouble(),
     ),
   ),
+  mapUrl: json['mapUrl'] as String?,
 );
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
@@ -25,6 +26,7 @@ Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
     r'$1': instance.coordinates.$1,
     r'$2': instance.coordinates.$2,
   },
+  'mapUrl': instance.mapUrl,
 };
 
 $Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
