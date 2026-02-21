@@ -157,6 +157,9 @@ class _AppViewState extends State<AppView> {
             if (state is Authenticated && FeatureFlags.isProfileEnabled) {
               context.read<ProfileCubit>().loadProfile();
             }
+            if (state is Guest && FeatureFlags.isProfileEnabled) {
+              context.read<ProfileCubit>().setGuestMode();
+            }
           },
           child: child,
         );
