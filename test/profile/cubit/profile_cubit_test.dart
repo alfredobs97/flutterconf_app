@@ -77,6 +77,34 @@ void main() {
           const ProfileError(),
         ],
       );
+
+      blocTest<ProfileCubit, ProfileState>(
+        'emits [loading, guest] when no user is logged in',
+        setUp: () {
+          when(() => authRepository.currentUser).thenReturn(null);
+        },
+        build: () => ProfileCubit(
+          profileRepository: profileRepository,
+          authRepository: authRepository,
+        ),
+        act: (cubit) => cubit.loadProfile(),
+        expect: () => [
+          const ProfileLoading(),
+          const ProfileGuest(),
+        ],
+      );
+    });
+
+    group('setGuestMode', () {
+      blocTest<ProfileCubit, ProfileState>(
+        'emits [guest]',
+        build: () => ProfileCubit(
+          profileRepository: profileRepository,
+          authRepository: authRepository,
+        ),
+        act: (cubit) => cubit.setGuestMode(),
+        expect: () => [const ProfileGuest()],
+      );
     });
   });
 }

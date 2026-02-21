@@ -25,6 +25,10 @@ class ProfileLoaded extends ProfileState {
   List<Object?> get props => [profile];
 }
 
+class ProfileGuest extends ProfileState {
+  const ProfileGuest();
+}
+
 class ProfileNotFound extends ProfileState {
   const ProfileNotFound();
 }

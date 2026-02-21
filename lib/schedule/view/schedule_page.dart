@@ -34,11 +34,40 @@ class ScheduleView extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
+        body: Column(
           children: [
-            ScheduleListView(events: day1),
-            ScheduleListView(events: day2),
+            const _SearchBar(),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  ScheduleListView(events: state.filteredDay1),
+                  ScheduleListView(events: state.filteredDay2),
+                ],
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: TextField(
+        onChanged: (value) =>
+            context.read<ScheduleCubit>().onSearchChanged(value),
+        decoration: InputDecoration(
+          hintText: 'Search by talk or speaker',
+          prefixIcon: const Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
         ),
       ),
     );
@@ -52,6 +81,9 @@ class ScheduleListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (events.isEmpty) {
+      return const Center(child: Text('No talks found.'));
+    }
     return ListView.separated(
       separatorBuilder: (_, _) => const SizedBox(height: 16),
       padding: const EdgeInsets.all(12),

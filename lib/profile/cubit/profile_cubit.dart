@@ -24,7 +24,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       final id = userId ?? _authRepository.currentUser?.uid;
       if (id == null) {
-        emit(const ProfileError());
+        emit(const ProfileGuest());
         return;
       }
       final profile = await _profileRepository.getProfile(id);
@@ -36,6 +36,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     } on Exception catch (_) {
       emit(const ProfileError());
     }
+  }
+
+  void setGuestMode() {
+    emit(const ProfileGuest());
   }
 
   Future<void> updateProfile(UserProfile profile) async {

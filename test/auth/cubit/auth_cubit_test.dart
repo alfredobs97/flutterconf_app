@@ -2,17 +2,26 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutterconf/auth/auth.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 
 class MockUser extends Mock implements User {}
 
+class MockStorage extends Mock implements Storage {}
+
 void main() {
   late AuthRepository authRepository;
   late User user;
+  late Storage storage;
 
   setUp(() {
+    storage = MockStorage();
+    when(() => storage.write(any(), any<dynamic>())).thenAnswer((_) async {});
+    when(() => storage.read(any())).thenReturn(null);
+    HydratedBloc.storage = storage;
+
     authRepository = MockAuthRepository();
     user = MockUser();
     when(() => authRepository.user).thenAnswer((_) => const Stream.empty());
