@@ -91,7 +91,7 @@ git check-ignore -q "$ISOLATION_PATH"
 | Local dir exists | Use it (verify ignored) |
 | Dir not ignored | Add to .gitignore + commit |
 | Baseline tests fail | Report failures + ask |
-| Work complete | Cleanup with `git worktree remove` |
+| Work complete | Cleanup (ONLY after user agreement) |
 
 ## Red Flags
 
@@ -100,11 +100,13 @@ git check-ignore -q "$ISOLATION_PATH"
 - Hardcode absolute paths (e.g., `/Users/name/...`).
 - Skip baseline test verification.
 - Proceed with worktree creation if it violates project conventions found in `AGENT.md`.
+- Remove a worktree without getting explicit approval from the user first.
 
 **Always:**
 - Follow priority: `AGENT.md` > existing > ask.
 - Ensure the main workspace remains clean.
 - Use `flutter pub get` after creating the worktree.
+- Ask the user for permission before running cleanup commands that delete worktrees.
 
 ## Resources
 

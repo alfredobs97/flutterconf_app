@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/organizers/organizers.dart';
 import 'package:flutterconf/settings/settings.dart';
 import 'package:flutterconf/theme/widgets/fc_app_bar.dart';
 import 'package:flutterconf/theme/widgets/theme_toggle.dart';
-import 'package:flutterconf/updater/updater.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shorebird_code_push/shorebird_code_push.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -18,12 +15,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SettingsCubit(
-        updater: context.read<ShorebirdUpdater>(),
-      )..init(),
-      child: const SettingsView(),
-    );
+    return const SettingsView();
   }
 }
 
@@ -34,22 +26,9 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final headingStyle = theme.textTheme.titleMedium;
-    return BlocListener<UpdaterCubit, UpdaterState>(
-      listenWhen: (previous, current) =>
-          previous.status != current.status &&
-          current.status == UpdaterStatus.idle,
-      listener: (context, state) {
-        if (!state.updateAvailable) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              const SnackBar(content: Text('No update available')),
-            );
-        }
-      },
-      child: Scaffold(
-        appBar: FCAppBar(title: const Text('Settings')),
-        body: ListView(
+    return Scaffold(
+      appBar: FCAppBar(title: const Text('Settings')),
+      body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           children: [
             Text('Preferences', style: headingStyle),
