@@ -5,15 +5,20 @@ import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/favorites/favorites.dart';
 import 'package:flutterconf/location/location.dart';
 import 'package:flutterconf/schedule/schedule.dart';
+import 'package:flutterconf/favorites/repository/favorites_repository.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockStorage extends Mock implements Storage {}
+
 class MockAuthRepository extends Mock implements AuthRepository {}
+
+class MockFavoritesRepository extends Mock implements FavoritesRepository {}
 
 void main() {
   late Storage storage;
   late AuthRepository authRepository;
+  late FavoritesRepository favoritesRepository;
 
   setUp(() {
     storage = MockStorage();
@@ -23,6 +28,12 @@ void main() {
 
     authRepository = MockAuthRepository();
     when(() => authRepository.user).thenAnswer((_) => const Stream.empty());
+
+    favoritesRepository = MockFavoritesRepository();
+    when(
+      () => favoritesRepository.favorites,
+    ).thenAnswer((_) => const Stream.empty());
+    when(() => favoritesRepository.currentFavorites).thenReturn([]);
   });
 
   group('SchedulePage', () {
@@ -31,8 +42,12 @@ void main() {
         MaterialApp(
           home: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => FavoritesCubit()),
-              BlocProvider(create: (_) => AuthCubit(authRepository: authRepository)),
+              BlocProvider(
+                create: (_) => FavoritesCubit(repository: favoritesRepository),
+              ),
+              BlocProvider(
+                create: (_) => AuthCubit(authRepository: authRepository),
+              ),
             ],
             child: const SchedulePage(),
           ),
@@ -48,8 +63,12 @@ void main() {
         MaterialApp(
           home: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => FavoritesCubit()),
-              BlocProvider(create: (_) => AuthCubit(authRepository: authRepository)),
+              BlocProvider(
+                create: (_) => FavoritesCubit(repository: favoritesRepository),
+              ),
+              BlocProvider(
+                create: (_) => AuthCubit(authRepository: authRepository),
+              ),
             ],
             child: const SchedulePage(),
           ),

@@ -1,31 +1,35 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutterconf/favorites/repository/favorites_repository.dart';
 import 'package:flutterconf/schedule/schedule.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'favorites_state.dart';
 
-class FavoritesCubit extends HydratedCubit<FavoritesState> {
-  FavoritesCubit() : super(const FavoritesState());
+class FavoritesCubit extends Cubit<FavoritesState> {
+  FavoritesCubit({required FavoritesRepository repository})
+    : _repository = repository,
+      super(FavoritesState(events: repository.currentFavorites)) {
+    _subscription = _repository.favorites.listen((events) {
+      emit(state.copyWith(events: events));
+    });
+  }
 
-  void toggleFavorite(Event event) {
-    final events = [...state.events];
-    events.contains(event) ? events.remove(event) : events.add(event);
-    events.sort((a, b) => a.startTime.compareTo(b.startTime));
-    emit(state.copyWith(events: events));
+  final FavoritesRepository _repository;
+  late final StreamSubscription<List<Event>> _subscription;
+
+  Future<void> toggleFavorite(Event event) async {
+    if (state.events.contains(event)) {
+      await _repository.removeFavorite(event);
+    } else {
+      await _repository.addFavorite(event);
+    }
   }
 
   @override
-  FavoritesState? fromJson(Map<String, dynamic> json) {
-    final events = [
-      ...(json['events'] as List).map(
-        (e) => Event.fromJson(e as Map<String, dynamic>),
-      ),
-    ]..removeWhere((e) => !allEvents.contains(e));
-    return FavoritesState(events: events);
-  }
-
-  @override
-  Map<String, dynamic>? toJson(FavoritesState state) {
-    return {'events': state.events.map(Event.toJson).toList()};
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

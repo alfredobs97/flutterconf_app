@@ -9,6 +9,7 @@ import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/config/config.dart';
 import 'package:flutterconf/config/router.dart';
 import 'package:flutterconf/favorites/favorites.dart';
+import 'package:flutterconf/favorites/repository/favorites_repository.dart';
 import 'package:flutterconf/firebase_options.dart';
 import 'package:flutterconf/profile/bloc/qr_scanning_bloc.dart';
 import 'package:flutterconf/profile/cubit/profile_cubit.dart';
@@ -18,9 +19,11 @@ import 'package:flutterconf/profile/data/scanned_profiles_repository.dart';
 import 'package:flutterconf/theme/app_theme.dart';
 import 'package:flutterconf/theme/cubit/theme_cubit.dart';
 import 'package:flutterconf/updater/updater.dart';
+import 'package:flutterconf/schedule/repository/events_repository.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 Future<void> main() async {
@@ -39,17 +42,21 @@ Future<void> main() async {
     storageDirectory: temporaryDirectory,
   );
 
+  final sharedPreferences = await SharedPreferences.getInstance();
+
   if (kDebugMode) await HydratedBloc.storage.clear();
   runApp(
     RepositoryProvider(
       create: (_) => AuthRepository(),
-      child: const App(),
+      child: App(sharedPreferences: sharedPreferences),
     ),
   );
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({required this.sharedPreferences, super.key});
+
+  final SharedPreferences sharedPreferences;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +65,10 @@ class App extends StatelessWidget {
         RepositoryProvider(create: (_) => ShorebirdUpdater()),
         RepositoryProvider(create: (_) => ProfileRepository()),
         RepositoryProvider(create: (_) => ScannedProfilesRepository()),
+        RepositoryProvider(create: (_) => EventsRepository()),
+        RepositoryProvider(
+          create: (_) => FavoritesRepository(prefs: sharedPreferences),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -67,7 +78,11 @@ class App extends StatelessWidget {
             ),
           ),
           BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(create: (_) => FavoritesCubit()),
+          BlocProvider(
+            create: (context) => FavoritesCubit(
+              repository: context.read<FavoritesRepository>(),
+            ),
+          ),
           BlocProvider(
             create: (context) => UpdaterCubit(
               updater: context.read<ShorebirdUpdater>(),
