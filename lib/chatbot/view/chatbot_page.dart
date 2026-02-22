@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterconf/ai/ai_service.dart';
 import 'package:flutterconf/ai/firebase_ai_service.dart';
 import 'package:flutterconf/chatbot/cubit/chatbot_cubit.dart';
 import 'package:flutterconf/favorites/repository/favorites_repository.dart';
@@ -64,10 +65,9 @@ class _ChatbotViewState extends State<ChatbotView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF131314) : Colors.white,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         title: const Text('Gemini Assistant'),
         backgroundColor: Colors.transparent,
@@ -113,7 +113,7 @@ class _ChatbotViewState extends State<ChatbotView> {
 class MessageBubble extends StatelessWidget {
   const MessageBubble({required this.message, super.key});
 
-  final dynamic message;
+  final ChatMessage message;
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +136,8 @@ class MessageBubble extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    Colors.blue.shade400,
-                    Colors.purple.shade400,
+                    theme.colorScheme.primary,
+                    theme.colorScheme.secondary,
                   ],
                 ),
               ),
@@ -184,6 +184,7 @@ class ThinkingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Row(
@@ -194,8 +195,8 @@ class ThinkingIndicator extends StatelessWidget {
               shape: BoxShape.circle,
               gradient: LinearGradient(
                 colors: [
-                  Colors.blue.shade400,
-                  Colors.purple.shade400,
+                  theme.colorScheme.primary,
+                  theme.colorScheme.secondary,
                 ],
               ),
             ),
@@ -206,10 +207,15 @@ class ThinkingIndicator extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const SizedBox(
+          SizedBox(
             width: 20,
             height: 20,
-            child: CircularProgressIndicator(strokeWidth: 2),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                theme.colorScheme.primary,
+              ),
+            ),
           ),
         ],
       ),
