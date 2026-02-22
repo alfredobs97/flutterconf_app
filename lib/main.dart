@@ -17,11 +17,9 @@ import 'package:flutterconf/profile/data/profile_repository.dart';
 import 'package:flutterconf/profile/data/scanned_profiles_repository.dart';
 import 'package:flutterconf/theme/app_theme.dart';
 import 'package:flutterconf/theme/cubit/theme_cubit.dart';
-import 'package:flutterconf/schedule/repository/events_repository.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
