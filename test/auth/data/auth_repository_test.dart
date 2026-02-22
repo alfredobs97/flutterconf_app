@@ -10,9 +10,6 @@ class MockGoogleSignIn extends Mock implements GoogleSignIn {}
 
 class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
 
-class MockGoogleSignInAuthentication extends Mock
-    implements GoogleSignInAuthentication {}
-
 class MockUser extends Mock implements User {}
 
 class MockUserCredential extends Mock implements UserCredential {}
@@ -53,16 +50,14 @@ void main() {
     group('logInWithGoogle', () {
       test('signs in with google and signs into firebase', () async {
         final googleAccount = MockGoogleSignInAccount();
-        final googleAuth = MockGoogleSignInAuthentication();
+        const googleAuth = GoogleSignInAuthentication(idToken: 'id_token');
 
         when(
-          () => googleSignIn.signIn(),
+          () => googleSignIn.authenticate(),
         ).thenAnswer((_) async => googleAccount);
         when(
           () => googleAccount.authentication,
-        ).thenAnswer((_) async => googleAuth);
-        when(() => googleAuth.accessToken).thenReturn('token');
-        when(() => googleAuth.idToken).thenReturn('id');
+        ).thenReturn(googleAuth);
 
         when(
           () => firebaseAuth.signInWithCredential(any()),
@@ -70,12 +65,31 @@ void main() {
 
         await authRepository.logInWithGoogle();
 
-        verify(() => googleSignIn.signIn()).called(1);
+        verify(() => googleSignIn.authenticate()).called(1);
         verify(() => firebaseAuth.signInWithCredential(any())).called(1);
       });
 
+      test('throws LogInWithGoogleFailure if idToken is null', () async {
+        final googleAccount = MockGoogleSignInAccount();
+        const googleAuth = GoogleSignInAuthentication(idToken: null);
+
+        when(
+          () => googleSignIn.authenticate(),
+        ).thenAnswer((_) async => googleAccount);
+        when(
+          () => googleAccount.authentication,
+        ).thenReturn(googleAuth);
+
+        expect(
+          () => authRepository.logInWithGoogle(),
+          throwsA(isA<LogInWithGoogleFailure>()),
+        );
+      });
+
       test('throws LogInWithGoogleFailure if sign in fails', () async {
-        when(() => googleSignIn.signIn()).thenThrow(Exception());
+        when(
+          () => googleSignIn.authenticate(),
+        ).thenThrow(Exception());
 
         expect(
           () => authRepository.logInWithGoogle(),
@@ -108,7 +122,7 @@ void main() {
     group('logOut', () {
       test('signs out of firebase and google', () async {
         when(() => firebaseAuth.signOut()).thenAnswer((_) async {});
-        when(() => googleSignIn.signOut()).thenAnswer((_) async => null);
+        when(() => googleSignIn.signOut()).thenAnswer((_) async {});
 
         await authRepository.logOut();
 

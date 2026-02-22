@@ -34,6 +34,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  final authRepository = AuthRepository();
+  await authRepository.initialize();
+
   final temporaryDirectory = kIsWeb
       ? HydratedStorageDirectory.web
       : HydratedStorageDirectory((await getTemporaryDirectory()).path);
@@ -46,8 +49,8 @@ Future<void> main() async {
 
   if (kDebugMode) await HydratedBloc.storage.clear();
   runApp(
-    RepositoryProvider(
-      create: (_) => AuthRepository(),
+    RepositoryProvider.value(
+      value: authRepository,
       child: App(sharedPreferences: sharedPreferences),
     ),
   );
