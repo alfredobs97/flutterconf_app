@@ -71,7 +71,7 @@ class FirebaseAiService implements AiService {
   Future<void> sendMessage(String text) async {
     _addMessage(ChatMessage(isUser: true, text: text));
 
-    var response = await _chat.sendMessage(Content.text(text));
+    final response = await _chat.sendMessage(Content.text(text));
     await _handleResponse(response);
   }
 

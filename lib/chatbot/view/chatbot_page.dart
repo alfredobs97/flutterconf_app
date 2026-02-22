@@ -31,10 +31,12 @@ class ChatbotView extends StatefulWidget {
 
 class _ChatbotViewState extends State<ChatbotView> {
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -43,82 +45,237 @@ class _ChatbotViewState extends State<ChatbotView> {
     if (text.isNotEmpty) {
       context.read<ChatbotCubit>().sendMessage(text);
       _controller.clear();
+      _scrollToBottom();
     }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('AI Assistant')),
+      backgroundColor: isDark ? const Color(0xFF131314) : Colors.white,
+      appBar: AppBar(
+        title: const Text('Gemini Assistant'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           Expanded(
-            child: BlocBuilder<ChatbotCubit, ChatbotState>(
+            child: BlocConsumer<ChatbotCubit, ChatbotState>(
+              listener: (context, state) => _scrollToBottom(),
               builder: (context, state) {
-                if (state.messages.isEmpty) {
-                  return const Center(child: Text('How can I help you today?'));
-                }
                 return ListView.builder(
-                  itemCount: state.messages.length,
+                  controller: _scrollController,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  itemCount:
+                      state.messages.length +
+                      (state.status == ChatbotStatus.loading ? 1 : 0),
                   itemBuilder: (context, index) {
+                    if (index == state.messages.length) {
+                      return const ThinkingIndicator();
+                    }
                     final message = state.messages[index];
-                    return Align(
-                      alignment: message.isUser
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: message.isUser
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          message.text,
-                          style: TextStyle(
-                            color: message.isUser
-                                ? Colors.white
-                                : Theme.of(context).textTheme.bodyLarge?.color,
-                          ),
-                        ),
-                      ),
-                    );
+                    return MessageBubble(message: message);
                   },
                 );
               },
             ),
           ),
-          if (context.select((ChatbotCubit cubit) => cubit.state.status) ==
-              ChatbotStatus.loading)
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(),
-                    ),
-                    onSubmitted: (_) => _sendMessage(),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _sendMessage,
-                ),
-              ],
-            ),
+          _ChatInput(
+            controller: _controller,
+            onSend: _sendMessage,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  const MessageBubble({required this.message, super.key});
+
+  final dynamic message;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isUser = message.isUser;
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        children: [
+          if (!isUser) ...[
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.blue.shade400,
+                    Colors.purple.shade400,
+                  ],
+                ),
+              ),
+              child: const Icon(
+                Icons.auto_awesome,
+                size: 16,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 12),
+          ],
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: isUser
+                    ? (isDark ? const Color(0xFF303132) : Colors.grey.shade200)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(18),
+                  topRight: const Radius.circular(18),
+                  bottomLeft: Radius.circular(isUser ? 18 : 4),
+                  bottomRight: Radius.circular(isUser ? 4 : 18),
+                ),
+              ),
+              child: Text(
+                message.text,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  height: 1.5,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
+            ),
+          ),
+          if (isUser) const SizedBox(width: 40), // Offset for user messages
+        ],
+      ),
+    );
+  }
+}
+
+class ThinkingIndicator extends StatelessWidget {
+  const ThinkingIndicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue.shade400,
+                  Colors.purple.shade400,
+                ],
+              ),
+            ),
+            child: const Icon(
+              Icons.auto_awesome,
+              size: 16,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 12),
+          const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ChatInput extends StatelessWidget {
+  const _ChatInput({
+    required this.controller,
+    required this.onSend,
+  });
+
+  final TextEditingController controller;
+  final VoidCallback onSend;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        boxShadow: [
+          if (!isDark)
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF1E1F20) : Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(
+            color: isDark ? Colors.white12 : Colors.black12,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: controller,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  hintText: 'Enter a prompt here',
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 12),
+                ),
+                onSubmitted: (_) => onSend(),
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.send_rounded,
+                color: theme.primaryColor,
+              ),
+              onPressed: onSend,
+            ),
+          ],
+        ),
       ),
     );
   }
