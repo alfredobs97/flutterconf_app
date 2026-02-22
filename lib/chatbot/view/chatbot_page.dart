@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterconf/ai/firebase_ai_service.dart';
 import 'package:flutterconf/chatbot/cubit/chatbot_cubit.dart';
+import 'package:flutterconf/favorites/repository/favorites_repository.dart';
+import 'package:flutterconf/schedule/repository/events_repository.dart';
 
 class ChatbotPage extends StatelessWidget {
   const ChatbotPage({super.key});
@@ -9,7 +11,12 @@ class ChatbotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChatbotCubit(aiService: FirebaseAiService()),
+      create: (context) => ChatbotCubit(
+        aiService: FirebaseAiService(
+          eventsRepository: context.read<EventsRepository>(),
+          favoritesRepository: context.read<FavoritesRepository>(),
+        ),
+      ),
       child: const ChatbotView(),
     );
   }
