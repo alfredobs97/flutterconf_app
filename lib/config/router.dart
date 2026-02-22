@@ -7,7 +7,6 @@ import 'package:flutterconf/profile/view/profile_page.dart';
 import 'package:flutterconf/profile/view/public_profile_page.dart';
 import 'package:flutterconf/profile/view/qr_connect_page.dart';
 import 'package:flutterconf/profile/view/scanned_history_page.dart';
-import 'package:flutterconf/updater/updater.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -34,9 +33,7 @@ class AppRouter {
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const UpdateListener(
-            child: LaunchpadPage(),
-          ),
+          builder: (context, state) => const LaunchpadPage(),
         ),
         GoRoute(
           path: '/login',
