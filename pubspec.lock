@@ -564,10 +564,10 @@ packages:
     dependency: "direct main"
     description:
       name: googleai_dart
-      sha256: "22f8bb5e621067f4c9cd2f88db240bbd7f1ea54b960c55c348104c74794a97a7"
+      sha256: "8d42622a2af2d82ef1fcb506347174e53641842a0c5e9d6a035a02d3a767ccf1"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "3.2.0"
   graphs:
     dependency: transitive
     description:

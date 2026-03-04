@@ -8,7 +8,7 @@ class WelcomeView extends StatelessWidget {
 
   static const _suggestions = [
     '📅 ¿Que hay en la agenda el primer día?',
-    '🎤 ¿Quiénes son los ponentes?',
+    '💙 ¿Con que asistentes he conectado?',
     '⭐ ¿Que charlas tengo en favoritos?',
     '🔎 ¿Cómo llegar a la venue el segundo día?',
   ];
