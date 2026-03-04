@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterconf/ai/ai_service.dart';
-import 'package:flutterconf/ai/firebase_ai_service.dart';
+import 'package:flutterconf/ai/google_ai_dart_service.dart';
 import 'package:flutterconf/chatbot/cubit/chatbot_cubit.dart';
+import 'package:flutterconf/chatbot/widgets/widgets.dart';
 import 'package:flutterconf/favorites/repository/favorites_repository.dart';
+import 'package:flutterconf/profile/data/scanned_profiles_repository.dart';
 import 'package:flutterconf/schedule/repository/events_repository.dart';
 
 class ChatbotPage extends StatelessWidget {
@@ -13,9 +14,11 @@ class ChatbotPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ChatbotCubit(
-        aiService: FirebaseAiService(
+        aiService: GoogleAiDartService(
           eventsRepository: context.read<EventsRepository>(),
           favoritesRepository: context.read<FavoritesRepository>(),
+          scannedProfilesRepository: context.read<ScannedProfilesRepository>(),
+          apiKey: const String.fromEnvironment('GOOGLE_AI_API_KEY'),
         ),
       ),
       child: const ChatbotView(),
@@ -33,19 +36,22 @@ class ChatbotView extends StatefulWidget {
 class _ChatbotViewState extends State<ChatbotView> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
     _controller.dispose();
     _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   void _sendMessage() {
-    final text = _controller.text;
+    final text = _controller.text.trim();
     if (text.isNotEmpty) {
       context.read<ChatbotCubit>().sendMessage(text);
       _controller.clear();
+      _focusNode.requestFocus();
       _scrollToBottom();
     }
   }
@@ -55,8 +61,8 @@ class _ChatbotViewState extends State<ChatbotView> {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOutCubic,
         );
       }
     });
@@ -68,135 +74,101 @@ class _ChatbotViewState extends State<ChatbotView> {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        title: const Text('Gemini Assistant'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-      ),
+      appBar: _buildAppBar(context, theme),
       body: Column(
         children: [
           Expanded(
             child: BlocConsumer<ChatbotCubit, ChatbotState>(
-              listener: (context, state) => _scrollToBottom(),
+              listener: (context, state) {
+                _scrollToBottom();
+                if (state.status == ChatbotStatus.failure &&
+                    state.errorMessage != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.errorMessage!),
+                      backgroundColor: theme.colorScheme.error,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  );
+                }
+              },
               builder: (context, state) {
+                if (state.messages.isEmpty &&
+                    state.status != ChatbotStatus.loading &&
+                    state.status != ChatbotStatus.failure) {
+                  return WelcomeView(
+                    onSuggestionTapped: (text) {
+                      _controller.text = text;
+                      _sendMessage();
+                    },
+                  );
+                }
+
+                final itemCount = state.messages.length +
+                    (state.status == ChatbotStatus.loading ? 1 : 0) +
+                    (state.status == ChatbotStatus.failure &&
+                            state.errorMessage != null
+                        ? 1
+                        : 0);
+
                 return ListView.builder(
                   controller: _scrollController,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 20,
-                  ),
-                  itemCount:
-                      state.messages.length +
-                      (state.status == ChatbotStatus.loading ? 1 : 0),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  itemCount: itemCount,
                   itemBuilder: (context, index) {
                     if (index == state.messages.length) {
-                      return const ThinkingIndicator();
+                      if (state.status == ChatbotStatus.loading) {
+                        return const ThinkingBubble();
+                      }
+                      if (state.status == ChatbotStatus.failure &&
+                          state.errorMessage != null) {
+                        return ErrorBubble(message: state.errorMessage!);
+                      }
                     }
                     final message = state.messages[index];
-                    return MessageBubble(message: message);
+                    final isLast = index == state.messages.length - 1;
+                    return MessageBubble(message: message, isLast: isLast);
                   },
                 );
               },
             ),
           ),
-          _ChatInput(
-            controller: _controller,
-            onSend: _sendMessage,
+          BlocBuilder<ChatbotCubit, ChatbotState>(
+            buildWhen: (prev, curr) => prev.status != curr.status,
+            builder: (context, state) {
+              return ChatInput(
+                controller: _controller,
+                focusNode: _focusNode,
+                onSend: _sendMessage,
+                isLoading: state.status == ChatbotStatus.loading,
+              );
+            },
           ),
         ],
       ),
     );
   }
-}
 
-class MessageBubble extends StatelessWidget {
-  const MessageBubble({required this.message, super.key});
-
-  final ChatMessage message;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isUser = message.isUser;
-    final isDark = theme.brightness == Brightness.dark;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: isUser
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
-        children: [
-          if (!isUser) ...[
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    theme.colorScheme.primary,
-                    theme.colorScheme.secondary,
-                  ],
-                ),
-              ),
-              child: const Icon(
-                Icons.auto_awesome,
-                size: 16,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 12),
-          ],
-          Flexible(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: isUser
-                    ? (isDark ? const Color(0xFF303132) : Colors.grey.shade200)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(18),
-                  topRight: const Radius.circular(18),
-                  bottomLeft: Radius.circular(isUser ? 18 : 4),
-                  bottomRight: Radius.circular(isUser ? 4 : 18),
-                ),
-              ),
-              child: Text(
-                message.text,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  height: 1.5,
-                  color: isDark ? Colors.white : Colors.black87,
-                ),
-              ),
-            ),
-          ),
-          if (isUser) const SizedBox(width: 40), // Offset for user messages
-        ],
-      ),
-    );
-  }
-}
-
-class ThinkingIndicator extends StatelessWidget {
-  const ThinkingIndicator({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
+  PreferredSizeWidget _buildAppBar(BuildContext context, ThemeData theme) {
+    return AppBar(
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: const [0.0, 0.6],
                 colors: [
                   theme.colorScheme.primary,
-                  theme.colorScheme.secondary,
+                  theme.colorScheme.primary.withValues(alpha: 0.6),
                 ],
               ),
             ),
@@ -206,83 +178,11 @@ class ThinkingIndicator extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          const SizedBox(width: 12),
-          SizedBox(
-            width: 20,
-            height: 20,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                theme.colorScheme.primary,
-              ),
-            ),
-          ),
+          const SizedBox(width: 10),
+          const Text('Asistente Gemini'),
         ],
       ),
-    );
-  }
-}
-
-class _ChatInput extends StatelessWidget {
-  const _ChatInput({
-    required this.controller,
-    required this.onSend,
-  });
-
-  final TextEditingController controller;
-  final VoidCallback onSend;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        boxShadow: [
-          if (!isDark)
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
-            ),
-        ],
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E1F20) : Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(
-            color: isDark ? Colors.white12 : Colors.black12,
-          ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: controller,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Enter a prompt here',
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 12),
-                ),
-                onSubmitted: (_) => onSend(),
-              ),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.send_rounded,
-                color: theme.primaryColor,
-              ),
-              onPressed: onSend,
-            ),
-          ],
-        ),
-      ),
+      centerTitle: true,
     );
   }
 }
