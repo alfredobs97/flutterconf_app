@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutterconf/auth/auth.dart';
 import 'package:flutterconf/favorites/favorites.dart';
-import 'package:flutterconf/location/location.dart';
-import 'package:flutterconf/schedule/schedule.dart';
 import 'package:flutterconf/favorites/repository/favorites_repository.dart';
+import 'package:flutterconf/schedule/schedule.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
