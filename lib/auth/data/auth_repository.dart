@@ -4,31 +4,26 @@ import 'package:flutterconf/auth/auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository {
-  AuthRepository({
-    FirebaseAuth? firebaseAuth,
-    GoogleSignIn? googleSignIn,
-  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-       _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
+  AuthRepository();
 
-  final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
+  //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  //final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
-  Stream<User?> get user => _firebaseAuth.authStateChanges();
-  User? get currentUser => _firebaseAuth.currentUser;
+  Stream<User?> get user => Stream.empty();
+  User? get currentUser => null;
 
   /// Initializes the Google Sign-In instance.
   ///
   /// Must be called once before [logInWithGoogle] or [logOut] are used.
   Future<void> initialize() async {
-    await _googleSignIn.initialize(
-      clientId: kIsWeb
-          ? const String.fromEnvironment('GOOGLE_CLIENT_ID')
-          : null,
-    );
+    /*  await _googleSignIn.initialize(
+      clientId:
+          kIsWeb ? const String.fromEnvironment('GOOGLE_CLIENT_ID') : null,
+    ); */
   }
 
   Future<void> logInWithGoogle() async {
-    try {
+    /* try {
       final googleUser = await _googleSignIn.authenticate();
 
       final googleAuth = googleUser.authentication;
@@ -65,11 +60,11 @@ class AuthRepository {
         throw LogInCanceledFailure();
       }
       throw LogInWithGoogleFailure();
-    }
+    } */
   }
 
   Future<void> logInWithGithub() async {
-    try {
+    /* try {
       final githubProvider = GithubAuthProvider();
       await _firebaseAuth.signInWithPopup(githubProvider);
     } on FirebaseAuthException catch (e) {
@@ -92,11 +87,11 @@ class AuthRepository {
         throw LogInCanceledFailure();
       }
       throw LogInWithGithubFailure();
-    }
+    } */
   }
 
   Future<void> logOut() async {
-    try {
+    /* try {
       await Future.wait([
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
@@ -106,6 +101,6 @@ class AuthRepository {
       // ignore: avoid_catches_without_on_clauses
     } catch (_) {
       throw LogOutFailure();
-    }
+    } */
   }
 }

@@ -30,12 +30,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   final authRepository = AuthRepository();
-  await authRepository.initialize();
+  // await authRepository.initialize();
 
   final temporaryDirectory = kIsWeb
       ? HydratedStorageDirectory.web
