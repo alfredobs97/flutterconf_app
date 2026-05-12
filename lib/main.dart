@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +9,6 @@ import 'package:flutterconf/config/config.dart';
 import 'package:flutterconf/config/router.dart';
 import 'package:flutterconf/favorites/favorites.dart';
 import 'package:flutterconf/favorites/repository/favorites_repository.dart';
-import 'package:flutterconf/firebase_options.dart';
 import 'package:flutterconf/profile/bloc/qr_scanning_bloc.dart';
 import 'package:flutterconf/profile/cubit/profile_cubit.dart';
 import 'package:flutterconf/profile/cubit/scanned_profiles_cubit.dart';

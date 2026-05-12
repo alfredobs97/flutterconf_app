@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:firebase_ai/firebase_ai.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutterconf/ai/ai_service.dart';
 import 'package:flutterconf/favorites/repository/favorites_repository.dart';
 import 'package:flutterconf/location/data/venues.dart';
@@ -122,6 +123,8 @@ class FirebaseAiService implements AiService {
       return _addMessage(ChatMessage(isUser: false, text: response.text!));
     }
 
+    debugPrint('la ia me ha pedido estas llamadas: $functionCalls');
+
     for (final call in functionCalls) {
       final result = switch (call.name) {
         'getEvents' => _handleGetEvents(),
@@ -133,17 +136,21 @@ class FirebaseAiService implements AiService {
       };
 
       if (result != null) {
+        debugPrint('el resultado de la llamada es: $result');
         final nextResponse = await _chat.sendMessage(
           Content.functionResponse(call.name, result),
         );
+        debugPrint('la siguiente respuesta es: $nextResponse');
         await _handleResponse(nextResponse);
       }
     }
   }
 
   Map<String, Object> _handleGetEvents() {
+    debugPrint('me han pedido los eventos');
     final events = _eventsRepository.getEvents();
     final summary = events.map((Event e) => '- ${e.name}').join('\n');
+    debugPrint('los eventos son: $summary');
     return {'events': summary};
   }
 
